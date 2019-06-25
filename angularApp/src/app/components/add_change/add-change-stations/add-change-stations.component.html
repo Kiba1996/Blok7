@@ -1,8 +1,6 @@
 <div class="container">
     <div class="row">
-
-
-    <div class="col-xs-6" >
+      <div class="col-xs-6" >
         <div>
             <label for="action"><b>Choose action:</b></label><br/>
             <input  required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
@@ -12,71 +10,55 @@
         <br/>
           <div *ngIf="!isSelected('Remove')">
               <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
-              
                 <div class="form-group">
                   <label for="Name"><b>Station name:</b></label>
                   <input required type="text" class="form-control" name="Name" placeholder="Station name" value={{name}} ngModel>
-                  <div *ngIf="!validations.nameOk" style="color:red">Name can't be empty.</div>
-              
+                  <!-- <div *ngIf="!validations.nameOk" style="color:red">Name can't be empty.</div> -->
                 </div>
+                
                 <div class="form-group">
                   <label for="Address"><b>Station address :</b> </label><br/>
                   <label style="max-width: 200px; word-wrap: break-word">{{address}}</label>
                   <!-- <input required type="text" class="form-control" name="Address" placeholder="Station address" value={{address}} ngModel> -->
-                  <div *ngIf="!validations.addressOk" style="color:red">Address can't be empty.</div>
+                  <!-- <div *ngIf="!validations.addressOk" style="color:red">Address can't be empty.</div> -->
                 </div>
+                
                 <div class="form-group">
                   <label for="Longitude"><b>Longitude:</b> </label><br/>
                   <label>{{coordinates.longitude}}</label>
                   <!-- <input required type="number" class="form-control" name="Longitude" placeholder="Longitude"  value={{coordinates.longitude}} ngModel> -->
-                  <div *ngIf="!validations.longitudeOk" style="color:red">Longitude can't be empty</div>
+                  <!-- <div *ngIf="!validations.longitudeOk" style="color:red">Longitude can't be empty</div> -->
                 </div>
+                
                 <div class="form-group">
                   <label for="Latitude"><b>Latitude: </b></label><br/>
                   <label>{{coordinates.latitude}}</label>
                   <!-- <input required type="number" class="form-control" name="Latitude" placeholder="Latitude"  value={{coordinates.latitude}} ngModel > -->
-                  <div *ngIf="!validations.latitudeOk" style="color:red">Latitude can't be empty</div>
+                  <!-- <div *ngIf="!validations.latitudeOk" style="color:red">Latitude can't be empty</div> -->
                 </div>
               
               <button type="submit" class="btn btn-success" *ngIf="isSelected('Add')">Add</button>
               <button type="submit" class="btn btn-success" *ngIf="isSelected('Change')">Change</button>
               <!-- <button type="submit" class="button" *ngIf="isSelected('Remove')">Remove</button> -->
-              </form>
-              </div>
-              <button type="button" class="btn btn-success" *ngIf="isSelected('Remove')" (click)=RemoveStation() >Remove</button>
-              
+            </form>
+          </div>
+          <button type="button" class="btn btn-success" *ngIf="isSelected('Remove')" (click)=RemoveStation() >Remove</button>
+      </div>
 
-    </div>
-
-
-
-
-    <div class="col-xs-6">
-<div style="width:50%; height: 50%; margin: 1% 25%">
-  <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18" (mapClick)="placeMarker1($event)">  
-    <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
-    [markerDraggable]="isSelected('Change')"
-      (dragEnd)="markerDragEnd($event,stat.Name,stat.Id,stat.Version)"
-      (markerClick) = "stationClick(stat.Id)">
-      <agm-info-window [latitude]="stat.Latitude" [longitude]="stat.Longitude" >
-
-     
-        <span style="font-size: 16px;font-family:'Times New Roman'">{{stat.Name}}</span>
-        <br/>
-        
-        <span style="font-family:'Times New Roman'; color:gray;">{{stat.Address}}</span>
-        
-      </agm-info-window>
-    
-    </agm-marker>
-  </agm-map>
+      <div class="col-xs-6">
+        <div style="width:50%; height: 50%; margin: 1% 25%">
+          <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18" (mapClick)="placeMarker1($event)">  
+            <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
+              [markerDraggable]="isSelected('Change')"
+              (dragEnd)="markerDragEnd($event,stat.Name,stat.Id,stat.Version)"
+              (markerClick) = "stationClick(stat.Id)">
+                <agm-info-window [latitude]="stat.Latitude" [longitude]="stat.Longitude" >
+                  <span style="font-size: 16px;font-family:'Times New Roman'">{{stat.Name}}</span><br/>
+                  <span style="font-family:'Times New Roman'; color:gray;">{{stat.Address}}</span>
+                </agm-info-window>
+              </agm-marker>
+          </agm-map>
+        </div>
+      </div>
   </div>
-    </div>
-
-
-
-
-
-
-</div>
 </div>

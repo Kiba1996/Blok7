@@ -6,7 +6,7 @@ import { StationModel } from 'src/app/models/stationModel';
 import { NgForm } from '@angular/forms';
 import { StationServiceService } from 'src/app/services/stationService/station-service.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { AddStationValidation } from 'src/app/models/Validation/validationModels';
+//import { AddStationValidation } from 'src/app/models/Validation/validationModels';
 
 @Component({
   selector: 'app-add-change-stations',
@@ -26,7 +26,7 @@ export class AddChangeStationsComponent implements OnInit {
   version: number;
   public allStations: any = [];
   iconPath : any = { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}}
-  validations : AddStationValidation = new AddStationValidation();
+  //validations : AddStationValidation = new AddStationValidation();
   constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader, private statServ: StationServiceService) { 
     this.statServ.getAllStations().subscribe(data => {
     this.stati = data;
@@ -34,29 +34,25 @@ export class AddChangeStationsComponent implements OnInit {
   }
 
   ngOnInit() {
-   
-    this.markerInfo = new MarkerInfo(new GeoLocation(45.242268, 19.842954), 
+   this.markerInfo = new MarkerInfo(new GeoLocation(45.242268, 19.842954), 
     "assets/ftn.png",
     "Jugodrvo" , "" , "http://ftn.uns.ac.rs/691618389/fakultet-tehnickih-nauka");
-    
-    this.mapsApiLoader.load().then(() =>{
-     
+      this.mapsApiLoader.load().then(() =>{
       this.geocoder = new google.maps.Geocoder();
     });
   }
 
   onSubmit(stationData: StationModel, form: NgForm){
-    
     if(this.selected == "Add")
     {
       stationData.Latitude = this.coordinates.latitude;
       stationData.Longitude = this.coordinates.longitude;
       stationData.Address = this.address;
       console.log(stationData)
-      if(this.validations.validate(stationData)) {
-        this.refresh();
-        return;
-      }
+      // if(this.validations.validate(stationData)) {
+      //   this.refresh();
+      //   return;
+      // }
       this.statServ.addStation(stationData).subscribe(data => 
         {
           window.alert("Station successfully added!");
@@ -66,11 +62,7 @@ export class AddChangeStationsComponent implements OnInit {
         err => {
           window.alert(err.error);
           this.refresh();
-         
-  
-        }
-        );
-     
+        });
     }
     else if(this.selected == "Change"){
       stationData.Latitude = this.coordinates.latitude;
@@ -82,11 +74,11 @@ export class AddChangeStationsComponent implements OnInit {
       }
       stationData.Id = this.id;
       stationData.Version = this.version;
-      if(this.validations.validate(stationData))
-      {
-        this.refresh();
-        return;
-      } 
+      // if(this.validations.validate(stationData))
+      // {
+      //   this.refresh();
+      //   return;
+      // } 
       console.log("stationData")
       console.log(stationData)
       this.statServ.changeStation(stationData).subscribe(data =>
@@ -98,13 +90,8 @@ export class AddChangeStationsComponent implements OnInit {
         err => {
           window.alert(err.error);
           this.refresh();
-         
-  
-        }
-      );
-      
+         });
     }
-  
     else{
       console.log("lalallaa")
     }
@@ -113,6 +100,10 @@ export class AddChangeStationsComponent implements OnInit {
 
   RemoveStation()
   {
+    if(this.id == undefined)
+    {
+      this.id = 0;
+    }
     this.statServ.deleteStation(this.id).subscribe(data =>
       {
         window.alert("Station successfully removed!");
@@ -121,11 +112,8 @@ export class AddChangeStationsComponent implements OnInit {
       err => {
         window.alert(err.error);
         this.refresh();
-       
-
-      });
-    
-  }
+       });
+    }
 
   setradio(e: string): void   
   {  
@@ -140,16 +128,15 @@ export class AddChangeStationsComponent implements OnInit {
 
   isSelected(name: string): boolean   
   { 
-        if (!this.selected) { // if no radio button is selected, always return false so every nothing is shown  
-            return false;  
-        }  
-        return (this.selected === name); // if current radio button is selected, return true, else return false  
+    if (!this.selected) {   
+        return false;  
+    }  
+    return (this.selected === name); 
   } 
 
   placeMarker1($event){
     this.coordinates = new GeoLocation($event.coords.lat, $event.coords.lng);
     this.getAddress(this.coordinates.latitude,this.coordinates.longitude);
-    
   }
 
   getAddress(latitude: number,longitude:number){

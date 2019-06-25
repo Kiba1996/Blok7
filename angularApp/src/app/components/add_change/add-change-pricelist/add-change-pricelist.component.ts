@@ -28,45 +28,51 @@ validPrices: TicketPricesPomModel;
   let priceL : any;
   let bol : boolean = false;
   this.ticketPricesPom.PriceList = pm;
- let a : Date = new Date(Date.now());
-  if(pm.StartOfValidity.toString() == ""  || pm.EndOfValidity.toString() == '' || pm.StartOfValidity == undefined || pm.StartOfValidity == null || pm.EndOfValidity == undefined || pm.EndOfValidity == null)
-  {
-    window.alert("Start or End of validiti can't be empty!");
-    form.reset();
-    //this.refresh();
+//  let a : Date = new Date(Date.now());
+//   if(pm.StartOfValidity.toString() == ""  || pm.EndOfValidity.toString() == '' || pm.StartOfValidity == undefined || pm.StartOfValidity == null || pm.EndOfValidity == undefined || pm.EndOfValidity == null)
+//   {
+//     window.alert("Start or End of validiti can't be empty!");
+//     form.reset();
+//     //this.refresh();
 
-  }
-  else if(pm.StartOfValidity> pm.EndOfValidity)
-  {
-    window.alert("Start of validiti id bigger than End of validity!");
-    form.reset();
-    //this.refresh();
-  }
+//   }
+//   else if(pm.StartOfValidity> pm.EndOfValidity)
+//   {
+//     window.alert("Start of validiti id bigger than End of validity!");
+//     form.reset();
+//     //this.refresh();
+//   }
   
-  else{
+  // else{
     this.pricelistServ.addPricelist(this.ticketPricesPom).subscribe(data =>
       {
         window.alert("Timetable successfully added!");
         this.refresh();
-      })
-  }
+      },
+      err => {
+        window.alert(err.error);
+        this.refresh();
+      });
+  // }
   
 
   }
   onSubmit1(pm: TicketPricesPomModel, form: NgForm){
+   if(pm.Daily == null){
+      pm.Daily = 0;
+    }
+    if(pm.Hourly == null){
+      pm.Hourly = 0;
+    }
+    if(pm.Monthly == null){
+      pm.Monthly = 0;
+    }
+    if(pm.Yearly == null){
+      pm.Yearly = 0;
+    }
     this.ticketPricesPom = pm;
-    if(this.ticketPricesPom.Hourly<=0 || this.ticketPricesPom.Daily <= 0 || this.ticketPricesPom.Monthly <0 || this.ticketPricesPom.Yearly<=0)
-    {
-      window.alert("Prices can't be les then 1");
-      this.datumVazenjaBool = false;
-      //form.reset();
-      this.refresh();
-    }
-    else{
-      this.datumVazenjaBool = true;
-    }
+    this.datumVazenjaBool = true;
     
-
   }
   refresh(){
     this.ticketPricesPom  = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(null,null,0, []));

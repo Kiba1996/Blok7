@@ -49,52 +49,32 @@ namespace WebApp.Controllers
             return pricelist;
         }
 
-        //// PUT: api/Pricelists/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutPricelist(int id, Pricelist pricelist)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != pricelist.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(pricelist).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!PricelistExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
 
         // POST: api/Pricelists
         [Route("Add")]
         [ResponseType(typeof(Pricelist))]
-        public bool PostPricelist(TicketPricesHelpModel t)
+        public IHttpActionResult PostPricelist(TicketPricesHelpModel t)
         {
             if (!ModelState.IsValid)
             {
-                return false;
+                return BadRequest(ModelState);
             }
-
-
+            if (t.Hourly <= 0 || t.Daily <= 0 || t.Monthly <= 0 || t.Yearly <= 0)
+            {
+                return Content(HttpStatusCode.BadRequest, "Invalid value for prices.");
+            }
+            if (t.PriceList.StartOfValidity.ToString() == "" || t.PriceList.EndOfValidity.ToString() == "")
+            {
+                return Content(HttpStatusCode.BadRequest, "Invalid dates for validity period. Dates can't be empty.");
+            }
+            if(t.PriceList.StartOfValidity > t.PriceList.EndOfValidity)
+            {
+                return Content(HttpStatusCode.BadRequest, "Invalid dates for validity period. Start of validity period is greater than the end.");
+            }
+            if(t.PriceList.StartOfValidity.Value.Date < DateTime.Now.Date)
+            {
+                return Content(HttpStatusCode.BadRequest, "Invalid dates for validity period. Start of validity period can't be older than today.");
+            }
             try
             {
                 Pricelist prl = new Pricelist();
@@ -125,30 +105,14 @@ namespace WebApp.Controllers
                 unitOfWork.PriceLists.Add(prl);
                 unitOfWork.Complete();
 
-                return true;
+                return Ok();
             }
             catch (Exception ex)
             {
 
-                return false;
+                return NotFound();
             }
         }
-
-        //// DELETE: api/Pricelists/5
-        //[ResponseType(typeof(Pricelist))]
-        //public IHttpActionResult DeletePricelist(int id)
-        //{
-        //    Pricelist pricelist = db.Pricelists.Find(id);
-        //    if (pricelist == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Pricelists.Remove(pricelist);
-        //    db.SaveChanges();
-
-        //    return Ok(pricelist);
-        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -159,9 +123,6 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
-        //private bool PricelistExists(int id)
-        //{
-        //    return db.Pricelists.Count(e => e.Id == id) > 0;
-        //}
+        
     }
 }

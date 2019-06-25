@@ -9,14 +9,14 @@ import { TicketModel } from 'src/app/models/ticketModel';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { NgForm } from '@angular/forms';
 //import { PayPalConfig } from 'ngx-paypal'
-import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
+//import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
 @Component({
   selector: 'app-buy-a-ticket',
   templateUrl: './buy-a-ticket.component.html',
   styleUrls: ['./buy-a-ticket.component.css']
 })
 export class BuyATicketComponent implements OnInit {
-  public payPalConfig?: IPayPalConfig;
+  //public payPalConfig?: IPayPalConfig;
   allTicketTypes : any = [];
   ticketTypeDetail: string = "";
   selecetTT : number;

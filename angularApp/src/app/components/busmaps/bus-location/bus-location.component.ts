@@ -116,10 +116,10 @@ export class BusLocationComponent implements OnInit {
   }
 
   private checkConnection(){
-    this.realTimeService.startConnection().subscribe(e => {
+    this.notifForBL.startConnection().subscribe(e => {
       this.isConnected = e; 
         if (e) {
-          this.realTimeService.StartTimer()
+          this.notifForBL.StartTimer()
         }
     });
   }  
