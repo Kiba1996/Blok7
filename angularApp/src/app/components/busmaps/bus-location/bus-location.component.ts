@@ -39,7 +39,6 @@ export class BusLocationComponent implements OnInit {
 
   isChanged : boolean = false;
 
-//iconPath : any = { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}};
   constructor(private mapsApiLoader : MapsAPILoader,private notifForBL : NotificationsForBusLocService, private ngZone: NgZone, private lineService : LineServiceService, private clickService : ForBusLocationService) {
     this.isConnected = false;
     this.notifications = [];
@@ -58,17 +57,7 @@ export class BusLocationComponent implements OnInit {
       });
     //inicijalizacija polyline
     this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
-    // this.marker = new MarkerInfo(new GeoLocation(45.242268, 19.842954), 
-    // "assets/ftn.png",
-    // "Jugodrvo" , "" ,"");
-    //this.mapsApiLoader.load().then(() =>{
-  //   this.marker = new google.maps.Marker({
-  //     position: new google.maps.LatLng(this.latitude,this.longitude),
-  //   map: new google.maps.Map(document.getElementById("mapa")),
-  //     title: "Your current location!"
-  // });
-  //  });
-    //za hub
+   
     this.checkConnection();
     this.subscribeForTime();
   }
@@ -85,15 +74,7 @@ export class BusLocationComponent implements OnInit {
         this.clickService.click(this.stations).subscribe();
       }
     });
-    // this.lineService.getAllStationsByLineNumber(lineNumber).subscribe(
-    //   data =>{
-    //     this.stations = data;
-    //     for(var i=0; i<this.stations.length; ++i){
-    //       this.polyline.addLocation(new GeoLocation(this.stations[i].Lat, this.stations[i].Lon));
-    //     }
-    //     console.log(this.stations);
-    //     this.clickService.click(this.stations).subscribe();
-    //   });
+   
   }
 
   onSelectionChangeNumber(event){
@@ -137,10 +118,7 @@ export class BusLocationComponent implements OnInit {
        if(this.isChanged){
          this.latitude = pos[0];
           this.longitude = pos[1];
-          // this.marker.location.latitude = pos[0];
-          // this.marker.location.longitude = pos[0];
-         //this.transition(pos);
-          
+           
        }else{
           this.latitude = 0;
           this.longitude = 0;
@@ -158,29 +136,4 @@ export class BusLocationComponent implements OnInit {
     this.time = null;
   }
 
-//   numDeltas:number = 100;
-//  delay: number = 5; //milliseconds
-// i:number = 0;
-//  deltaLat: number;
-//  deltaLng: number;
-// transition(result){
-//     this.i = 0;
-//     //this.deltaLat = 0.2;
-//     // (result[0] - this.latitude)/this.numDeltas;
-//    // this.deltaLng = 0.2;
-//     //(result[1] - this.longitude)/this.numDeltas;
-//     this.moveMarker();
-// }
-
-//  moveMarker(){
-//   this.latitude += this.deltaLat;
-//   this.longitude += this.deltaLng;
-//   console.log("ulazi u ovoooo");
-//     var latlng = new GeoLocation(this.latitude, this.longitude);
-//    //this.marker.updatePosition(latlng);
-//     if(this.i!=this.numDeltas){
-//         this.i++;
-//         setTimeout(this.moveMarker, this.delay);
-//     }
-//   }
 }

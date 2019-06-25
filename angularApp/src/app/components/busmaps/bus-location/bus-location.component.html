@@ -11,28 +11,15 @@
 <div>
   <!-- Kreiramo mapu -->
    <agm-map [latitude]="startLat" [longitude]="startLon" [zoom]="zoom" id = "mapa"> 
-
-
-     
-          <div  *ngFor="let point of polyline.path, let j = index">
-              <agm-direction 
-              [renderOptions] = "{polylineOptions: {strokeColor: polyline.color}, preserveViewport: true}"
-               *ngIf="polyline.path[j+1]"  
-              [origin]="{ lat: polyline.path[j].latitude, lng: polyline.path[j].longitude }" 
-              [destination]="{ lat: polyline.path[j+1].latitude, lng: polyline.path[j+1].longitude }">
-                  <!-- <agm-polyline-point  *ngFor="let point of oneLine.Stations" [latitude]="point.Latitude" [longitude]="point.Longitude">
-                  [strokeColor]="oneLine.ColorLine"
-                  </agm-polyline-point> -->
-                </agm-direction>
-          </div>
-        
+      <div  *ngFor="let point of polyline.path, let j = index">
+        <agm-direction 
+        [renderOptions] = "{polylineOptions: {strokeColor: polyline.color}, suppressMarkers: true,preserveViewport: true}"
+          *ngIf="polyline.path[j+1]"  
+        [origin]="{ lat: polyline.path[j].latitude, lng: polyline.path[j].longitude }" 
+        [destination]="{ lat: polyline.path[j+1].latitude, lng: polyline.path[j+1].longitude }">
+        </agm-direction>
+      </div>
        
-
-      
-    <!-- <agm-polyline [strokeColor]="polyline.color">
-      <agm-polyline-point *ngFor="let point of polyline.path" [latitude]="point.latitude" [longitude]="point.longitude">
-      </agm-polyline-point>
-    </agm-polyline> -->
 
     <agm-marker *ngFor="let point of polyline.path" [latitude]="point.latitude" [longitude]="point.longitude" [iconUrl]="polyline.icon">
     </agm-marker>

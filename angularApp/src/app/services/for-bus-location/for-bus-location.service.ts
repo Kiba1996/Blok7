@@ -21,6 +21,6 @@ export class ForBusLocationService {
         }
       } 
 
-    return this.http.post(this.url+`api/Stations/SendStationsToHub`,stations,httpOptions);
+    return this.http.post(this.url+"api/Stations/SendStationsToHub",stations,httpOptions);
 }
 }

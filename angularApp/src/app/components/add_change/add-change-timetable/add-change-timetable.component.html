@@ -18,7 +18,7 @@
         </select>
   </div>
 
-  <div  *ngIf="chooseVehicle && isSelected('Add') ">
+  <div  *ngIf="chooseVehicle && isSelected('Add') && boolic">
       <select name="vehicleChoice"  (click)='SelectedVehicle($event)' ngModel>
           <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} - {{ln.Type}}</option>
       </select>

@@ -46,54 +46,6 @@ namespace WebApp.Controllers
             return ret;
         }
 
-        //// GET: api/Vehicles/5
-        //[ResponseType(typeof(Vehicle))]
-        //public IHttpActionResult GetVehicle(int id)
-        //{
-        //    Vehicle vehicle = db.Vehicles.Find(id);
-        //    if (vehicle == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(vehicle);
-        //}
-
-        //// PUT: api/Vehicles/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutVehicle(int id, Vehicle vehicle)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != vehicle.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(vehicle).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!VehicleExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
         // POST: api/Vehicles
         [Route("Add")]
         [ResponseType(typeof(Vehicle))]
@@ -102,6 +54,10 @@ namespace WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if (vehicle.Type == "" || vehicle.Type == null)
+            {
+                return Content(HttpStatusCode.BadRequest, "You have to select type of vehicle!");
             }
 
             try
@@ -123,6 +79,11 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Vehicle))]
         public IHttpActionResult DeleteVehicle(int id)
         {
+            if (id == 0)
+            {
+                return Content(HttpStatusCode.BadRequest, "You have to select vehicle you want to remove!");
+            }
+
             Vehicle vehicle = unitOfWork.Vehicles.Get(id);
             if (vehicle == null)
             {
@@ -144,9 +105,5 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
-        //private bool VehicleExists(int id)
-        //{
-        //    return db.Vehicles.Count(e => e.Id == id) > 0;
-        //}
     }
 }

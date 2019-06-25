@@ -6,7 +6,7 @@ import { DayTypeModel } from 'src/app/models/dayTypeModel';
 import { VehicleModel } from 'src/app/models/vehicleModel';
 import { VehicleService } from 'src/app/services/vehicleService/vehicle.service';
 import { Time } from '@angular/common';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-change-timetable',
@@ -39,7 +39,7 @@ lineSelected: string = "0";
 MyInput: Time;
 
 
-  constructor(private lineServ: LineServiceService, private timetableServ: TimetableService,private vehicleServ: VehicleService) { 
+  constructor(private router: Router,private lineServ: LineServiceService, private timetableServ: TimetableService,private vehicleServ: VehicleService) { 
     this.lineServ.getAllLines().subscribe(data => {
       this.allLines = data;
       console.log(data);
@@ -63,19 +63,19 @@ MyInput: Time;
 
   setradio(e: string): void   
   {  
-        this.selected = e;  
-        this.boolic = false;
-        
-        this.refresh();
+    this.selected = e;  
+    this.boolic = false;
+    
+    this.refresh();
        
   }  
    
   isSelected(name: string): boolean   
   {  
-        if (!this.selected) { 
-            return false;  
-        }  
-        return (this.selected === name); 
+    if (!this.selected) { 
+        return false;  
+    }  
+    return (this.selected === name); 
   } 
 
   SelectedDaytype(event: any)
@@ -84,6 +84,7 @@ MyInput: Time;
     console.log(this.dt);
     if(this.dt == 0){
       this.selectedDay = false;
+      this.boolic = false;
     }else{
       this.selectedDay = true;
       if(this.selected == "Add")
@@ -148,13 +149,10 @@ getLineIds(){
   let ll: any =[];
   
   if(this.allTimetables === void 0){
-
     this.showList = this.allLines;
   }
   else{
-
     this.allTimetables.forEach(element => {
-     
       if(element.DayTypeId == this.dt)
       {
         ll.push(element);
@@ -166,24 +164,23 @@ getLineIds(){
       this.showList = this.allLines;
     }
     else {
+      this.showList = [];
+      this.allLines.forEach(element => {
+        k = false;
 
-    this.showList = [];
-    this.allLines.forEach(element => {
-      k = false;
-
-      ll.forEach(d => {
-        if(d.LineId == element.Id)
-        {
-          k = true;
-        }
-      });
-  
-     if(!k ) {
-        this.showList.push(element);
-     }
+        ll.forEach(d => {
+          if(d.LineId == element.Id)
+          {
+            k = true;
+          }
+        });
     
-    });
-  }
+      if(!k ) {
+          this.showList.push(element);
+      }
+      
+      });
+    }
   }
   
 }
@@ -205,7 +202,7 @@ SelectedLine(event: any): void
             if(this.availableVehicles == null || this.availableVehicles.length == 0 || this.availableVehicles== undefined)
             {
               window.alert("No available vehicles! You will be redirected to add vehicle page!");
-              window.location.href = "/add_change_vehicle";
+              this.router.navigateByUrl("/add_change_vehicle");
             }
             this.chooseVehicle = true;
           });
@@ -219,13 +216,16 @@ SelectedLine(event: any): void
       this.SplitDepartures();
     }
   }
+    else{
+      this.boolic = false;
+    }
+  }
   
-}
+
 
 SelectedVehicle(event: any): void
 {
   this.vehicleId = event.target.value;
-
 }
 SplitDepartures(){
 
@@ -246,7 +246,7 @@ SplitDepartures(){
 }
 addTime(n:any){
  let dodajIsto = false;
-  if(n != undefined){
+  if(n != undefined && n!= ""){
   console.log(n);
   if(this.stringovi.length > 0){
     this.stringovi.forEach(element =>{
@@ -278,23 +278,16 @@ ChangeTimetable()
     stringZaDodavanje = stringZaDodavanje + x + ";";
   });
   this.ttZaDodavanje.Departures = stringZaDodavanje;
-  if(this.ttZaDodavanje.Departures == "")
-  {
-    window.alert("You have to select vehicle and add at least one time!");
-    this.refresh();
-  }else{
-    this.timetableServ.changeTimetable(this.ttZaDodavanje.Id,this.ttZaDodavanje).subscribe(data=>
-      {
-        window.alert("Timetable successfully changed!");
-        this.refresh();
-      },
-      err => {
-        window.alert(err.error);
-        this.refresh();
-       
-
+ 
+  this.timetableServ.changeTimetable(this.ttZaDodavanje.Id,this.ttZaDodavanje).subscribe(data=>
+    {
+      window.alert("Timetable successfully changed!");
+      this.refresh();
+    },
+    err => {
+      window.alert(err.error);
+      this.refresh();
       });
-  }
   
 }
 
@@ -309,25 +302,14 @@ AddTimetable(){
   
   this.ttZaDodavanje.Vehicles.push(new VehicleModel(this.vehicleId));
 
-  if(this.ttZaDodavanje.Vehicles.length == 0 || this.ttZaDodavanje.Departures == "")
-  {
-    window.alert("You have to select vehicle and  add at least one time!");
+  this.timetableServ.addTimetable(this.ttZaDodavanje).subscribe(data => {
+    window.alert("Timetable successfully added!");
     this.refresh();
-  }
-  else {
-    this.timetableServ.addTimetable(this.ttZaDodavanje).subscribe(data => {
-      window.alert("Timetable successfully added!");
-      this.refresh();
-    },
-    err => {
-      window.alert(err.error);
-      this.refresh();
-     
-
+  },
+  err => {
+    window.alert(err.error);
+    this.refresh();
     });
-  }
-  
-
 }
 removeFromTimes(st,i){
   this.stringovi1.splice(i,1);
@@ -352,9 +334,9 @@ DeleteTimetable()
 refresh(){
   this.ttZaDodavanje = new TimetableModel("",0,0,0);
   this.selectedDay = false;
-        this.daySelected = "0";
-        this.lineSelected = "0";
-        this.boolic = false;
+  this.daySelected = "0";
+  this.lineSelected = "0";
+  this.boolic = false;
   this.stringovi = [];
   this.stringovi1 = [];
   this.allTimetables= [];

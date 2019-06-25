@@ -21,7 +21,7 @@
 
     <div *ngIf="isSelected('Remove')" class="form-group">
         <label for="Type">Available vehicles:</label>
-        <select name="Id" [value] =  0  ngModel>
+        <select name="Id" [value] =  0  [(ngModel)] = 'idVozila'>
           <option value = 0 >None</option>
             <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} | {{ln.Type}}</option>
         </select>

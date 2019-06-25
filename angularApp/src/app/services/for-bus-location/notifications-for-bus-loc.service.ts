@@ -31,6 +31,7 @@ export class NotificationsForBusLocService {
       
         this.connection.start()
         .done((data: any) => {  
+          console.log("Uspesna konekcija za bus notifications")
             console.log('Now connected ' + data.transport.name + ', connection ID= ' + data.id)
             this.connectionExists = true;
 

@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { ChangePasswordModel } from 'src/app/models/changePassModel';
 import { FileUploadService } from 'src/app/services/fileUploadService/file-upload.service';
 import { NotificationService } from 'src/app/services/notificationService/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,7 +16,7 @@ import { NotificationService } from 'src/app/services/notificationService/notifi
 export class EditProfileComponent implements OnInit {
   user : any;
   selectedImage: any;
-  constructor(private usersService: UserProfileService, private fileServ: FileUploadService, private notificationServ: NotificationService) 
+  constructor(private router: Router, private usersService: UserProfileService, private fileServ: FileUploadService, private notificationServ: NotificationService) 
   { 
     this.requestUserInfo()
   }
@@ -38,20 +39,19 @@ export class EditProfileComponent implements OnInit {
   Button1(userr: RegModel, form: NgForm)
   {
     userr.Id = this.user.Id;
-    if(localStorage.getItem('name') != this.user.Email)
-    {
-       localStorage.setItem('name', this.user.Email);
-     }
+    
     if (this.selectedImage == undefined){
       this.usersService.edit(userr).subscribe(data =>{
-        window.location.href="/profile";
-      } );
-      //data =>{
-       // if(userr.Role != 'AppUser'){
-       //this.notificationServ.sendNotification();
-       // }
-     //  });
-        }else{
+        if(localStorage.getItem('name') != this.user.Email)
+        {
+            localStorage.setItem('name', this.user.Email);
+        }
+        this.router.navigateByUrl("/profile");
+      }, err =>
+      {
+        window.alert(err.error.ModelState[""]);
+      });
+      }else{
           this.fileServ.uploadFile(this.selectedImage)
           .subscribe(data => {      
             //alert("Image uploaded.");  
@@ -60,14 +60,15 @@ export class EditProfileComponent implements OnInit {
                 if(localStorage.getItem('role') == 'AppUser'){
                   this.notificationServ.sendNotificationToController();
                 }
-                window.location.href="/profile";
+                this.router.navigateByUrl("/profile");
+              }, err =>
+              {
+                window.alert(err.error.ModelState[""]);
               }
             );
-            //(data =>{
-             //if(regData.Role != 'AppUser'){
-             //this.notificationServ.sendNotification();
-            // }
-            //});
+          }, err =>
+          {
+            window.alert(err.error.ModelState[""]);
           });
         }
    
@@ -75,7 +76,10 @@ export class EditProfileComponent implements OnInit {
   Button2(pass: ChangePasswordModel, form:NgForm )
   {
     this.usersService.editPassword(pass).subscribe(data=>{
-      window.location.href="/profile";
+      this.router.navigateByUrl("/profile");
+    }, err =>
+    {
+      window.alert(err.error.ModelState[""]);
     });
   }
   onFileSelected(event){

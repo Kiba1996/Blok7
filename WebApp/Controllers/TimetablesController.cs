@@ -53,15 +53,20 @@ namespace WebApp.Controllers
         public IHttpActionResult PutTimetable(int id, Timetable timetable)
         {
             
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-                if (id != timetable.Id)
-                {
-                    return BadRequest();
-                }
+            if (id != timetable.Id)
+            {
+                return BadRequest();
+            }
+
+            if(timetable.Departures == null || timetable.Departures == "")
+            {
+                return Content(HttpStatusCode.BadRequest, "Can't add timetable without departures.");
+            }
 
             Timetable tt = unitOfWork.Timetables.Get(id);
             if (tt != null)
@@ -93,11 +98,6 @@ namespace WebApp.Controllers
             }
 
 
-
-
-            return StatusCode(HttpStatusCode.NoContent);
-            
-
         }
 
         // POST: api/Timetables
@@ -106,14 +106,23 @@ namespace WebApp.Controllers
         public IHttpActionResult PostTimetable(Timetable timetable)
         {
             
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             if (TimetableExists(timetable.Id))
             {
                 return Content(HttpStatusCode.Conflict, "CONFLICT Timetable already exists!");
+            }
+
+            if (timetable.Departures==null || timetable.Departures == "")
+            {
+                return Content(HttpStatusCode.BadRequest, "Can't add timetable without departures");
+            }
+            if (timetable.Vehicles.FirstOrDefault().Id == -1)
+            {
+                return Content(HttpStatusCode.BadRequest, "Can't add timetable without vehicle");
             }
 
             if (timetable.Version != 0)
@@ -123,20 +132,20 @@ namespace WebApp.Controllers
             }
 
             Timetable t = new Timetable();
-                t.Departures = timetable.Departures;
-                t.Version = timetable.Version;
-                t.DayTypeId = unitOfWork.DayTypes.Get(timetable.DayTypeId).Id;
-                t.LineId = unitOfWork.Lines.Get(timetable.LineId).Id;
-                t.Vehicles = new List<Vehicle>();
-                t.Vehicles.Add(unitOfWork.Vehicles.Get(timetable.Vehicles.FirstOrDefault().Id));
-                try
-                {
+            t.Departures = timetable.Departures;
+            t.Version = timetable.Version;
+            t.DayTypeId = unitOfWork.DayTypes.Get(timetable.DayTypeId).Id;
+            t.LineId = unitOfWork.Lines.Get(timetable.LineId).Id;
+            t.Vehicles = new List<Vehicle>();
+            t.Vehicles.Add(unitOfWork.Vehicles.Get(timetable.Vehicles.FirstOrDefault().Id));
+            try
+            {
 
-                    unitOfWork.Timetables.Add(t);
-                    unitOfWork.Complete();
+                unitOfWork.Timetables.Add(t);
+                unitOfWork.Complete();
 
-                    return Ok(t.Id);
-                }
+                return Ok(t.Id);
+            }
             catch (DbUpdateConcurrencyException ex)
             {
                 return Content(HttpStatusCode.Conflict, ex);
@@ -145,21 +154,25 @@ namespace WebApp.Controllers
             {
                 return InternalServerError(e);
             }
-
-
-
+            
         }
+
+
         [Route("Delete")]
         // DELETE: api/Timetables/5
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult DeleteTimetable(int id)
         {
-            
-                Timetable timetable = unitOfWork.Timetables.Get(id);
-                if (timetable == null)
-                {
-                    return Content(HttpStatusCode.NotFound, "Timetable that you are trying to delete either do not exist or was previously deleted by another user.");
-                }
+            if (id == 0)
+            {
+                return Content(HttpStatusCode.BadRequest, "You have to select timetable you want to delete!");
+            }
+
+            Timetable timetable = unitOfWork.Timetables.Get(id);
+            if (timetable == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Timetable that you are trying to delete either do not exist or was previously deleted by another user.");
+            }
             try
             {
                 unitOfWork.Timetables.Remove(timetable);

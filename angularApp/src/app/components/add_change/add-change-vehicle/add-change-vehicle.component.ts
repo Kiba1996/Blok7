@@ -12,6 +12,7 @@ export class AddChangeVehicleComponent implements OnInit {
   private selected: string="";
   availableVehicles : any = [];
   NemaSobonihVozila : boolean = false;
+  idVozila: string = "";
 
   constructor(private vehicleServ: VehicleService) {
     this.vehicleServ.GetAllAvailableVehicles().subscribe(data =>{
@@ -30,76 +31,62 @@ export class AddChangeVehicleComponent implements OnInit {
    
     if(this.selected == "Add")
     {
-      if(vehicleData.Type == "" || vehicleData.Type == null){
-        window.alert("You have to select type!");
-      }else
-      {
       console.log(vehicleData)
       this.vehicleServ.addVehicle(vehicleData).subscribe(data=>{
         window.alert("Station successfully added!");
         form.reset();
         this.refresh();
+      },
+      err => {
+        window.alert(err.error);
+        this.refresh();
       });
-    }
     }
     else if(this.selected == "Remove"){
       
-      if(vehicleData.Id != 0)
+      if(this.idVozila == "" || this.idVozila == null)
       {
-        this.vehicleServ.deleteVehicle(vehicleData.Id).subscribe(data => {
-          window.alert("Vehicle successfully removed!");
-          form.reset();
-          this.refresh();
-        });
+        vehicleData.Id = 0;
       }
-      
-      
-    }
+      this.vehicleServ.deleteVehicle(vehicleData.Id).subscribe(data => {
+        window.alert("Vehicle successfully removed!");
+        form.reset();
+        this.refresh();
+      },
+      err => {
+        window.alert(err.error);
+        this.refresh();
+      });
+      }
     else{
       console.log("lalallaa")
     }
-  
   }
 
   setradio(e: string): void   
   {  
-        this.selected = e;
-        this.refresh();      
+    this.selected = e;
+    this.refresh();      
   }  
 
   isSelected(name: string): boolean   
   { 
-        if (!this.selected) { // if no radio button is selected, always return false so every nothing is shown  
-            return false;  
-        }  
-        return (this.selected === name); // if current radio button is selected, return true, else return false  
+    if (!this.selected) { 
+        return false;  
+    }  
+    return (this.selected === name); 
   } 
 
   refresh(){
     this.NemaSobonihVozila = false;
+    this.idVozila = "";
     this.vehicleServ.GetAllAvailableVehicles().subscribe(data =>{
       this.availableVehicles = data;
       if(this.availableVehicles == null || this.availableVehicles.length == 0 || this.availableVehicles== undefined)
       {
         this.NemaSobonihVozila = true;
       }
-      
-    });
+     });
   }
-
-  // errorHandler(err: any) {
-  //   console.log(err);
-  //   if (err.status != undefined && (err.status == 409 || err.status == 404 || err.status == 400) &&
-  //     err.error.includes("WARNING")) {
-  //     alert(err.error);
-  //     if (!err.error.includes("REFRESH")) {
-  //      //radi nesto refresh
-  //     }
-  //   }
-  // }
-
-  // err => {
-  //   this.errorHandler(err);
-  // }
 
 }

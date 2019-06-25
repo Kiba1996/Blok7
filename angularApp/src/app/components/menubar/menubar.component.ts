@@ -11,12 +11,8 @@ import { Router } from '@angular/router';
 })
 export class MenubarComponent implements OnInit {
   prom: string;
-  // message: any = {};
-  // subscription: Subscription;
   
-  constructor(private notServ:NotificationService, public authService: AuthenticationService, private router: Router) {  
-     //this.subscription = this.notServ.getMessage().subscribe(message => { this.message = message; });
-    }
+  constructor(private notServ:NotificationService, public authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
     
@@ -31,8 +27,7 @@ export class MenubarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-     // window.location.href = "/home";
-      this.router.navigate(["signin"]);
+    this.router.navigate(["signin"]);
     
     
   }
@@ -40,8 +35,4 @@ export class MenubarComponent implements OnInit {
     return localStorage.getItem('role');
 }
 
-// ngOnDestroy() {
-//   // unsubscribe to ensure no memory leaks
-//   this.subscription.unsubscribe();
-// }
 }
