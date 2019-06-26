@@ -66,10 +66,11 @@ export class RegisterComponent implements OnInit {
     let regModel: RegModel = this.registerForm.value;
     let formData: FormData = new FormData();
 
-    regModel.Activated  = false;
+    
     regModel.Role = "AppUser";
 
     if (this.selectedImage == undefined || this.selectedImage == null){
+      regModel.Activated  = "Deactivated";
     this.accountService.register(regModel).subscribe(
       ret => {
         this.serverErrors = [];
@@ -85,6 +86,7 @@ export class RegisterComponent implements OnInit {
     );
     }
     else{
+      regModel.Activated  = "Pending";
       this.fileUploadService.uploadFile(this.selectedImage)
          .subscribe(data => { 
           this.accountService.register(regModel).subscribe(

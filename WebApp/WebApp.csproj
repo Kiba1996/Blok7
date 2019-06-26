@@ -279,6 +279,10 @@
     <Compile Include="Migrations\201906211144459_PokusajResavanjaKonflikta.Designer.cs">
       <DependentUpon>201906211144459_PokusajResavanjaKonflikta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906260925529_activatedString.cs" />
+    <Compile Include="Migrations\201906260925529_activatedString.Designer.cs">
+      <DependentUpon>201906260925529_activatedString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -429,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906211144459_PokusajResavanjaKonflikta.resx">
       <DependentUpon>201906211144459_PokusajResavanjaKonflikta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906260925529_activatedString.resx">
+      <DependentUpon>201906260925529_activatedString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

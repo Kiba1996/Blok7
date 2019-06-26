@@ -5,6 +5,9 @@
   <h4>Birthday: {{user?.Birthday}}</h4> 
   <h4>Address: {{user?.Address}}</h4>
   <h4>Activated: {{user?.Activated}}</h4><br/>
+  <div  *ngIf="accBool && nijeUser" >
+    <button type="submit" (click)="Resend()" >Resend request</button>  <br/>
+  </div>
   <button type="submit" (click)="Edit()" >Edit profile</button> <br/>
 </div>
 

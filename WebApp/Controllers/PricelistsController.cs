@@ -107,7 +107,7 @@ namespace WebApp.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return NotFound();

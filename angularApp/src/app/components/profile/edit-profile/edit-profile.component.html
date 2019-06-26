@@ -33,7 +33,7 @@
         <input required type="date" class="form-control" name="Birthday" placeholder="dd/mm/yyyy" [(ngModel)]="user.Birthday">
       </div>
 
-      <div *ngIf="!user.Image && user.Role=='AppUser'">
+      <div *ngIf="!user.Image && user.Role=='AppUser' && user.PassengerTypeId != 3">
           <div class="form-group" >
             <input type="file" (change)="onFileSelected($event)" >  
             <!-- <button type="button" class="button" (click)="onUpload()">Upload</button> -->

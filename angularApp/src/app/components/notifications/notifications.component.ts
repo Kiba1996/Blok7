@@ -75,6 +75,7 @@ export class NotificationsComponent implements OnInit {
       else alert("Something went wrong");
     })
   }
+
   AuthorizeControllers(id, i) {
     this.modelHelp.Id = id;
     this.verifyService.authorizeController(this.modelHelp).subscribe(resp => {
@@ -101,7 +102,45 @@ export class NotificationsComponent implements OnInit {
     })
   }
 
- 
+  DeclineAdmins(id,i)
+  {
+    this.modelHelp.Id = id;
+    this.verifyService.declineAdmin(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("Admin has been declined!");
+        this.awaitingAdmins.splice(i,1);
+      }
+
+      else alert("Something went wrong");
+    })
+  }
+
+  DeclineControllers(id,i)
+  {
+    this.modelHelp.Id = id;
+    this.verifyService.declineController(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("Controller has been declined!");
+        this.awaitingControllers.splice(i,1);
+      }
+
+      else alert("Something went wrong");
+    })
+  }
+
+  DeclineUser(id, i) {
+    this.modelHelp.Id = id;
+    this.verifyService.declineUser(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("Client has been declined!"); 
+        this.awaitingClients.splice(i,1);
+        this.wtfList.splice(i,1);
+      }
+
+      else alert("Something went wrong");
+    })
+  }
+
 
   
 }

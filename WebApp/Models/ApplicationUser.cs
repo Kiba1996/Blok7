@@ -21,7 +21,7 @@ namespace WebApp.Models
         public string Address { get; set; }
         public DateTime? Birthday { get; set; } //nullable
         public string Image { get; set; }
-        public bool Activated { get; set; }
+        public string Activated { get; set; }
         public string Role { get; set; }
         public List<Ticket> Tickets { get; set;  }
        

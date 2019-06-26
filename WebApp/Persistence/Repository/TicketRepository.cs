@@ -49,7 +49,7 @@ namespace WebApp.Persistence.Repository
                 client.Send(mm);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Error, mail did not send");
                 return false;

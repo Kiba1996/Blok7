@@ -139,7 +139,7 @@ namespace WebApp.Controllers
                 unitOfWork.Complete();
                 return Ok(t.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return NotFound();
             }

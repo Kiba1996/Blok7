@@ -36,4 +36,15 @@ export class VerificationService {
     return this.httpClient.post("http://localhost:52295/api/Account/AuthorizeUser",userId);
   }
 
+  declineAdmin(adminId): Observable<any> {
+    return this.httpClient.post("http://localhost:52295/api/Account/DeclineAdmin", adminId);
+  }
+
+  declineController(controllerId): Observable<any> {
+    return this.httpClient.post("http://localhost:52295/api/Account/DeclineController", controllerId);
+  }
+  declineUser(userId): Observable<any> {
+    return this.httpClient.post("http://localhost:52295/api/Account/DeclineUser",userId);
+  }
+
 }

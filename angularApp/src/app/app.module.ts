@@ -98,7 +98,8 @@ const Routes = [
         path:'edit',
         component: EditProfileComponent,
         canActivate: [UserSignedInGuard]
-      }]
+      }],
+      runGuardsAndResolvers: 'always',
   },
   {
     path: "add_change_lines",
@@ -169,7 +170,7 @@ const Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(Routes),
+    RouterModule.forRoot(Routes, {onSameUrlNavigation: 'reload'}),
     HttpModule,
     HttpClientModule,
     NgxPopper,

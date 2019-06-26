@@ -68,7 +68,7 @@ namespace WebApp.Controllers
 
                 return Ok(vehicle.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return NotFound();
             }

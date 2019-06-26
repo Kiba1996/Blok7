@@ -9,9 +9,9 @@ export class RegModel{
     ConfirmPassword: string;
     Role: string;
     PassengerType: string;
-    Activated: boolean;
+    Activated: string;
 
-    constructor(id:string,email: string, name: string, surname: string, address:string, birthday: Date,password: string, confirmPassword: string, role: string,passagerType: string, ac: boolean){
+    constructor(id:string,email: string, name: string, surname: string, address:string, birthday: Date,password: string, confirmPassword: string, role: string,passagerType: string, ac: string){
         this.Id = id;
         this.Email = email;
         this.Name = name;

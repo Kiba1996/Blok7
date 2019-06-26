@@ -55,8 +55,10 @@ namespace WebApp.Models
         [Required]
         [Display(Name = "Role")]
         public string Role { get; set; }
+        [Required]
+        [Display(Name = "Activated")]
+        public string Activated { get; set; }
 
-        
         [Display(Name = "PassengerType")]
         public string PassengerType { get; set; }
 
