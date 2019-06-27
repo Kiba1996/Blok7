@@ -55,5 +55,13 @@ namespace WebApp.Persistence.Repository
                 return false;
             }
         }
+
+        public IEnumerable<Ticket> getAllTicketsWithUser(string id)
+        {
+            List<Ticket> lista = Context.Tickets.Include(x => x.ApplicationUser).Where(x => x.ApplicationUser!=null).ToList();
+            List<Ticket> ret = lista.FindAll(m => m.ApplicationUser.Email == id);
+
+            return ret;
+        }
     }
 }

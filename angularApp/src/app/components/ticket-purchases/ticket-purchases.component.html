@@ -1,0 +1,14 @@
+<div *ngIf="!boolic || tickets.length == 0">
+    <h2>No tickets to show!!!</h2>
+  </div>
+  
+  <div *ngIf="boolic && tickets.length>0">
+    <div *ngFor="let t of tickets, let i = index">
+      <label>{{i+1}}.</label> <br/>
+      <label>   Time of purchase: {{t.PurchaseTime}}</label><br/>
+      <label>   Valid to: {{t.ExparationTime}}</label><br/>
+      <label>   Ticket type: {{t.TicketType}}</label><br/>
+      <label>   Ticket price: {{t.TicketPrice}}</label><br/>
+      <label>____________________________________________________</label>
+    </div>
+  </div> 

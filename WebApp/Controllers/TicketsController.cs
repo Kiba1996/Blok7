@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApp.Models;
+using WebApp.Models.HelpModels;
 using WebApp.Persistence;
 using WebApp.Persistence.UnitOfWork;
 
@@ -48,67 +49,68 @@ namespace WebApp.Controllers
             return unitOfWork.TicketTypes.GetAll().ToList();
         }
 
-        // GET: api/Tickets
-        //public IQueryable<Ticket> GetTickets()
-        //{
-        //    return db.Tickets;
-        //}
-
-        [Route("GetTicket")]
-        // GET: api/Tickets/5
-        [ResponseType(typeof(Ticket))]
-        public IHttpActionResult GetTicket(int id)
+        [Route("GetTickets")]
+        [HttpGet]
+        //GET: api/Tickets
+        public IEnumerable<TicketHelpModel> GetTicketsForOneUser(string id)
         {
+            ApplicationUser ap = UserManager.FindByEmail(id);
+            PassengerType pt = unitOfWork.PassengerTypes.Get((int)ap.PassengerTypeId);
 
-            Ticket ticket = unitOfWork.Tickets.GetTicketWithInclude(id);
-            
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-            if(ticket.ApplicationUser != null)
-            {
-                ticket.ApplicationUserId = ticket.ApplicationUser.Email;
-            }
-            
+            List<Ticket> lista = unitOfWork.Tickets.getAllTicketsWithUser(id).ToList();
 
-            return Ok(ticket);
+            List<TicketHelpModel> ret = new List<TicketHelpModel>();
+            foreach (Ticket t in lista)
+            {
+                TicketHelpModel st = new TicketHelpModel();
+                st.PurchaseTime = t.PurchaseTime;
+                double price = unitOfWork.TicketPrices.Get(t.TicketPricesId).Price;
+                st.TicketPrice = price - (price * pt.Coefficient);
+                st.TicketType = unitOfWork.TicketTypes.Get((int)t.TicketTypeId).Name;
+                DateTime d;
+                if (t.TicketTypeId == 1)
+                {
+                    d = new DateTime(t.PurchaseTime.Value.Year, t.PurchaseTime.Value.Month, t.PurchaseTime.Value.Day,
+                        t.PurchaseTime.Value.Hour + 1, t.PurchaseTime.Value.Minute, 0);
+                    st.ExparationTime = d.ToString();
+                }
+                if (t.TicketTypeId == 2)
+                { d = new DateTime(t.PurchaseTime.Value.Year, t.PurchaseTime.Value.Month, t.PurchaseTime.Value.Day+1,
+                      0, 0, 0);
+                    st.ExparationTime = d.ToString(); 
+                }
+                if (t.TicketTypeId == 3)
+                {
+                    if ((t.PurchaseTime.Value.Month < 8 && t.PurchaseTime.Value.Month % 2 == 0) || (t.PurchaseTime.Value.Month >= 8 && t.PurchaseTime.Value.Month % 2 != 0))
+                    {
+                        if(t.PurchaseTime.Value.Month == 2)
+                        {
+                            d = new DateTime(t.PurchaseTime.Value.Year, t.PurchaseTime.Value.Month, 28,
+                        0, 0, 0);
+                        }
+                        else
+                        {
+                            d = new DateTime(t.PurchaseTime.Value.Year, t.PurchaseTime.Value.Month, 30,
+                                                   0, 0, 0);
+                        }
+                       
+                    }
+                    else {
+                        d = new DateTime(t.PurchaseTime.Value.Year, t.PurchaseTime.Value.Month,31,
+                     0, 0, 0);
+                    }
+                    st.ExparationTime = d.ToString();
+                }
+                if (t.TicketTypeId == 4)
+                {
+                    d = new DateTime(t.PurchaseTime.Value.Year, 12, 31,
+                       0, 0, 0);
+                    st.ExparationTime = d.ToString();
+                }
+                ret.Add(st);
+            }
+            return ret;
         }
-
-        //// PUT: api/Tickets/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutTicket(int id, Ticket ticket)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != ticket.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(ticket).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!TicketExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
 
         // POST: api/Tickets
         [Route("Add")]
@@ -120,6 +122,22 @@ namespace WebApp.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (ticket.Name != null && ticket.Name != "")
+            {
+                if (ticket.TicketTypeId != 1)
+                {
+                    return Content(HttpStatusCode.BadRequest, "Only signedIn users can buy this type of ticket!");
+                }
+            }
+            else
+            {
+                ApplicationUser appu = UserManager.FindById(ticket.ApplicationUserId);
+                if ((appu.Activated == "Deactivated" || appu.Activated == "Pending") && ticket.TicketTypeId != 1)
+                {
+                    return Content(HttpStatusCode.BadRequest, "Only authorized users can buy this type of ticket!");
+                }
+            }
+
             try
             {
                 Ticket t = new Ticket();
@@ -128,7 +146,7 @@ namespace WebApp.Controllers
 
                 t.TicketTypeId = unitOfWork.TicketTypes.Get(ticket.TicketTypeId.GetValueOrDefault()).Id;
                 t.Name = "Karta";
-                if(ticket.ApplicationUserId  != null)
+                if(ticket.ApplicationUserId  != null && ticket.ApplicationUserId != "")
                 {
                     t.ApplicationUserId = UserManager.FindById(ticket.ApplicationUserId).Id;
                 }
@@ -146,24 +164,7 @@ namespace WebApp.Controllers
 
            
         }
-
-        //// DELETE: api/Tickets/5
-        //[ResponseType(typeof(Ticket))]
-        //public IHttpActionResult DeleteTicket(int id)
-        //{
-        //    Ticket ticket = db.Tickets.Find(id);
-        //    if (ticket == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Tickets.Remove(ticket);
-        //    db.SaveChanges();
-
-        //    return Ok(ticket);
-        //}
-
-
+        
         [Route("SendMail")]
         public string SendMail(Ticket ticket)
         {
@@ -215,10 +216,5 @@ namespace WebApp.Controllers
             }
             base.Dispose(disposing);
         }
-
-        //private bool TicketExists(int id)
-        //{
-        //    return db.Tickets.Count(e => e.Id == id) > 0;
-        //}
     }
 }

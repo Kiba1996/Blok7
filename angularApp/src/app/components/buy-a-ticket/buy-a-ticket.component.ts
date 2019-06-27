@@ -8,6 +8,7 @@ import { TypeModel } from 'src/app/models/typeModel';
 import { TicketModel } from 'src/app/models/ticketModel';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 //import { PayPalConfig } from 'ngx-paypal'
 //import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
 @Component({
@@ -28,11 +29,11 @@ export class BuyATicketComponent implements OnInit {
   user: any;
   neregKupVremKartu : boolean= false;
   poruka: string = "";
-  prikaziButtonK : boolean = true;
+  prikaziButtonK : boolean = false;
    typeM : any;
-  
+   EmailForPay : string = "";
 
-  constructor(private ticketServ: TicketService, private pricelistServ: PricelistServiceService, private usersService: UserProfileService) {
+  constructor(private router: Router, private ticketServ: TicketService, private pricelistServ: PricelistServiceService, private usersService: UserProfileService) {
     ticketServ.getAllTicketTypes().subscribe( data => {
       this.allTicketTypes = data;
     });
@@ -54,6 +55,11 @@ export class BuyATicketComponent implements OnInit {
            
         });
       }
+      // else {
+      //   this.neregKupVremKartu = true;
+      // }
+    }else {
+      this.neregKupVremKartu = true;
     }
    }
 
@@ -64,10 +70,10 @@ export class BuyATicketComponent implements OnInit {
 
   SelectedTicketType(event)
   {
-    if(event.target.value != "")
+    if(event.target.value != "" && event.target.value != "0" && this.selecetTT !=parseInt(event.target.value, 10))
     {
      this.selecetTT = parseInt(event.target.value, 10);
-     
+     this.prikaziButtonK = true;
      this.priceList.TicketPricess.forEach(element => {
        if(element.TicketTypeId == this.selecetTT)
        {
@@ -76,34 +82,36 @@ export class BuyATicketComponent implements OnInit {
        }
        
      });
-     let ro = localStorage.getItem('role');
-    if(ro)
-    {
-      if(ro == "AppUser")
-      {
+    //  let ro = localStorage.getItem('role');
+    // if(ro)
+    // {
+    //   if(ro == "AppUser")
+    //   {
 
         
-        this.prikaziButtonK = true;
-        this.neregKupVremKartu = false;
-
+    //     this.prikaziButtonK = true;
+    //     this.neregKupVremKartu = false;
+    if(!this.neregKupVremKartu)
+    {
         this.CalculateDiscount();
        
-      }
+     // }
     }else{
-      this.prikaziButtonK = false;
+    //  this.prikaziButtonK = false;
       this.discount = 0;
       this.priceWDiscount = this.price;
-      if(this.selecetTT == 1)
-      {
-        this.neregKupVremKartu = true;
-        this.poruka = "";
-      }
-      else{
-        this.poruka = "Only signed in users can buy this type of ticket!";
-        this.neregKupVremKartu = false;
-      }
+      // if(this.selecetTT == 1)
+      // {
+      //   this.neregKupVremKartu = true;
+      //   this.poruka = "";
+      // }
+      // else{
+      //   this.poruka = "Only signed in users can buy this type of ticket!";
+      //   this.neregKupVremKartu = false;
+      // }
 
     }
+    this.initConfig();
     }
   
   }
@@ -115,20 +123,19 @@ export class BuyATicketComponent implements OnInit {
       this.typeM = data;
       this.discount =  this.typeM.Coefficient * 100;
       this.priceWDiscount = this.price - (this.price * this.typeM.Coefficient) ;
-      if(this.typeM.Name != "Regular")
-      {
-        if(!this.user.Activated)
-        {
-          window.alert("You are not authorized for this action!");
-          this.prikaziButtonK = false;
-        }
-      }
+      // if(this.typeM.Name != "Regular")
+      // {
+      //   if(!this.user.Activated)
+      //   {
+      //     window.alert("You are not authorized for this action!");
+      //     this.prikaziButtonK = false;
+      //   }
+      // }
       
     });
   }
 
-  BuyTicket()
-  {
+  Button1(t:any,form: NgForm ){
    
     let ticketMod = new TicketModel("",new Date(),0,"",0,0);
     let b = new Date();
@@ -143,46 +150,64 @@ export class BuyATicketComponent implements OnInit {
       }
     });
     let ai : any;
-    this.usersService.getUserData(localStorage.getItem('name')).subscribe(data =>{
-      ai = data;
-      ticketMod.ApplicationUserId = ai.Id;
-      this.ticketServ.addTicket(ticketMod).subscribe(data => {
-        window.alert("Ticket successfully bought!")
-        window.location.href = "/home";
-      });
-    });
-  
-    
-    
-  }
-
-  Button1(t:any,form: NgForm ){
-    let ticketMod = new TicketModel("",new Date(),0,"",0,0);
-    let b = new Date();
-    b.setHours(b.getHours()+ 2);
-    ticketMod.PurchaseTime = new Date(b);
-    ticketMod.TicketTypeId = this.selecetTT;
-    this.priceList.TicketPricess.forEach(element => {
-      if(element.TicketTypeId == this.selecetTT)
+    let ro = localStorage.getItem('role');
+    if(ro)
+    {
+      if(ro == "AppUser")
       {
-        ticketMod.TicketPricesId = element.Id;
+        this.usersService.getUserData(localStorage.getItem('name')).subscribe(data =>{
+          ai = data;
+          ticketMod.ApplicationUserId = ai.Id;
+          this.ticketServ.addTicket(ticketMod).subscribe(data => {
+            window.alert("Ticket successfully bought!")
+            this.router.navigate(['ticketPurchases']);
+          },
+          err =>{
+            window.alert(err.error)
+            console.log(err);
+          });
+        });
       }
-    });
-    ticketMod.Name= t.Email;
-    ticketMod.ApplicationUserId = null;
-    this.ticketServ.addTicket(ticketMod).subscribe( data => {
-      this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
-        if(resp == 'Ok'){
-          window.alert("Ticket successfully bought!")
-          window.location.href = "/home";
-        }
-        else{
-          alert("Something went wrong");
-          window.location.href = "/home";
-        }
-      });
-    });
-   
+    }else{
+      if(t.Email != "" && t.Email != undefined && t.Email != null){
+
+        // let b = new Date();
+        // b.setHours(b.getHours()+ 2);
+        // ticketMod.PurchaseTime = new Date(b);
+        // ticketMod.TicketTypeId = this.selecetTT;
+        // this.priceList.TicketPricess.forEach(element => {
+        //   if(element.TicketTypeId == this.selecetTT)
+        //   {
+        //     ticketMod.TicketPricesId = element.Id;
+        //   }
+        // });
+        ticketMod.Name= t.Email;
+      // ticketMod.ApplicationUserId = null;
+        this.ticketServ.addTicket(ticketMod).subscribe( data => {
+          this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
+            if(resp == 'Ok'){
+              window.alert("Ticket successfully bought!")
+             this.router.navigateByUrl('/ticketPurchases');
+            }
+            else{
+              alert("Something went wrong");
+              this.router.navigateByUrl('/home');
+            }
+          },
+          err =>{
+            window.alert(err.error)
+            console.log(err);
+          });
+        },
+        err =>{
+          window.alert(err.error)
+          console.log(err);
+        });
+      } 
+      else{
+      window.alert("Email is required!");
+      }
+   }
   }
 
   private initConfig(): void {

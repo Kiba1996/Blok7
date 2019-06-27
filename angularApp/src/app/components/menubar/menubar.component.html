@@ -46,6 +46,9 @@
       </ul>
 
       <ul class = "navbar-nav"  *ngIf="loggedIn()" > 
+          <ul *ngIf="user =='AppUser'" class="navbar-nav mr-auto">
+              <li><a class="nav-link" [routerLink]="['/ticketPurchases']">Tickets</a></li>
+          </ul>
         <li><a class="nav-link" [routerLink]="['/profile']" >{{prom}}</a></li>
         <li><a class="nav-link" [routerLink]="['/home']" (click)="logout()">LogOut</a></li>
       </ul>

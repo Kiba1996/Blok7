@@ -45,6 +45,7 @@ import { UserNotSignedInGuard } from './guard/notSignedIn-guard';
 import { RegAdminContComponent } from './components/register/reg-admin-cont/reg-admin-cont.component';
 import { BusLocationComponent } from './components/busmaps/bus-location/bus-location.component';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { TicketPurchasesComponent } from './components/ticket-purchases/ticket-purchases.component';
 
 const Routes = [
   {
@@ -99,7 +100,7 @@ const Routes = [
         component: EditProfileComponent,
         canActivate: [UserSignedInGuard]
       }],
-      runGuardsAndResolvers: 'always',
+     
   },
   {
     path: "add_change_lines",
@@ -140,6 +141,11 @@ const Routes = [
     path: "add_change_vehicle",
     component: AddChangeVehicleComponent,
     canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "ticketPurchases",
+    component: TicketPurchasesComponent,
+    canActivate: [UserSignedInGuard]
   }
 ]
 
@@ -165,7 +171,8 @@ const Routes = [
     TicketValidationComponent,
     AddChangeVehicleComponent,
     RegAdminContComponent,
-    BusLocationComponent
+    BusLocationComponent,
+    TicketPurchasesComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 
 <div>
-  <select  name="ticketType"  (click)='SelectedTicketType($event)' value = "1" ngModel>
+  <select  name="ticketType"  (click)='SelectedTicketType($event)' value = "0" ngModel>
+    <option value="0">None</option>
     <option *ngFor="let ln of allTicketTypes" value={{ln.Id}} >{{ln.Name}}</option>
   </select>
 </div>
@@ -16,22 +17,23 @@
 <form  #ticketBuyForm="ngForm" (ngSubmit)="Button1(ticketBuyForm.value, ticketBuyForm)">
 
 <div *ngIf="neregKupVremKartu">
-  <label>Ticket is valid for the next hour from the moment of purchase!</label>
+  <!-- <label>Ticket is valid for the next hour from the moment of purchase!</label> -->
     <label for="email">Email address:</label>
-    <input required type="email" class="form-control" name="Email" placeholder="Email" ngModel>
-    <button type="submit" class="button" >Buy a ticket</button>
+    <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
+    
 </div>
-<div *ngIf="!neregKupVremKartu && !prikaziButtonK">
+<button *ngIf="prikaziButtonK" type="submit" class="button" >Buy a ticket</button>
+<!-- <div *ngIf="!neregKupVremKartu && !prikaziButtonK"> 
     <label>{{poruka}}</label>
       
-</div>
-<ngx-paypal [config]="payPalConfig"></ngx-paypal>
+</div> -->
+<!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
 </form>
 
-<div *ngIf="prikaziButtonK ">
+<!-- <div *ngIf="prikaziButtonK ">
     <button type="submit" class="button" (click)="BuyTicket()" >Buy a ticket</button>
     <br/>
     <br/>
     <br/>
     
-  </div>
+  </div> -->

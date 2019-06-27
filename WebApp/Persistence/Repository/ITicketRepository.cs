@@ -11,5 +11,6 @@ namespace WebApp.Persistence.Repository
     {
         bool NotifyViaEmail(string targetEmail, string subject, string body);
         Ticket GetTicketWithInclude(int id);
+        IEnumerable<Ticket> getAllTicketsWithUser(string id);
     }
 }
