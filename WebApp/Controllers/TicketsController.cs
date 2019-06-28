@@ -49,6 +49,145 @@ namespace WebApp.Controllers
             return unitOfWork.TicketTypes.GetAll().ToList();
         }
 
+        [Route("GetTicket")]
+        // GET: api/Tickets/5
+        [ResponseType(typeof(Ticket))]
+        public IHttpActionResult GetTicket(int id)
+        {
+            Ticket ticket = unitOfWork.Tickets.GetTicketWithInclude(id);
+
+            if (ticket == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Ticket is not in database");
+            }
+            if (ticket.ApplicationUser != null)
+            {
+                ticket.ApplicationUserId = ticket.ApplicationUser.Email;
+            }
+
+
+            return Ok(ticket);
+        }
+
+
+
+        [Route("validateTicketNoUser")]
+        public IHttpActionResult ValidateTicketNoUser(Ticket ticket)
+        {
+            if (ticket == null)
+            {
+                return Content(HttpStatusCode.BadRequest, "Ticket doesnt exists");
+            }
+            DateTime pr = (DateTime)ticket.PurchaseTime;
+            DateTime aa = pr.AddHours(1);
+            if (aa < DateTime.Now)
+            {
+                return Content(HttpStatusCode.BadRequest, "Ticket is not valid. Time is up!");
+            }
+            return Ok("Ticket is valid!");
+        }
+        [Route("validateTicket")]
+        public string ValidateTicket(ModelHelpTicketValidation tic)
+        {
+            if (tic.Name == "" || tic.Name == null)
+            {
+                return "You have to fill email adres of user!";
+            }
+            Ticket t = unitOfWork.Tickets.GetTicketWithInclude(tic.Id);
+            if (t == null)
+            {
+                return "There is not ticket with that id!";
+            }
+
+
+
+            if (tic.Name != t.ApplicationUser.Email)
+            {
+                string s = "User with email: " + tic.Name + " did not buy ticket with Id: " + tic.Id;
+                return s;
+            }
+            else
+            {
+                DateTime pr = (DateTime)t.PurchaseTime;
+                DateTime dt = DateTime.Now;
+                if (t.TicketTypeId == 1)
+                {
+                    DateTime aa = pr.AddHours(1);
+                    if (aa < DateTime.Now)
+                    {
+                        return "Ticket is not valid. Time is up!";
+                    }
+                    else
+                    {
+                        return "Ticket is valid!";
+                    }
+
+                }
+                if (t.TicketTypeId == 2)
+                {
+
+                    if (pr.Year < dt.Year)
+                    {
+                        return "Ticket is not valid. Time is up!";
+                    }
+                    else if (pr.Year == dt.Year)
+                    {
+                        if (pr.Month < dt.Month)
+                        {
+                            return "Ticket is not valid. Time is up!";
+                        }
+                        else if (pr.Month == dt.Month)
+                        {
+                            if (pr.Day == dt.Day)
+                            {
+                                return "Ticket is valid";
+                            }
+                            else
+                            {
+                                return "Ticket is not valid. Time is up!";
+                            }
+                        }
+                    }
+                }
+
+                if (t.TicketTypeId == 3)
+                {
+
+                    if (pr.Year < dt.Year)
+                    {
+                        return "Ticket is not valid. Time is up!";
+                    }
+                    else if (pr.Year == dt.Year)
+                    {
+                        if (pr.Month == dt.Month)
+                        {
+                            return "Ticket is valid";
+                        }
+                        else
+                        {
+                            return "Ticket is not valid. Time is up!";
+                        }
+                    }
+                }
+
+                if (t.TicketTypeId == 4)
+                {
+                    if (pr.Year == dt.Year)
+                    {
+                        return "Ticket is valid";
+                    }
+                    else
+                    {
+                        return "Ticket is not valid. Time is up!";
+                    }
+                }
+
+                return "Ticket is valid";
+            }
+        }
+
+
+
         [Route("GetTickets")]
         [HttpGet]
         //GET: api/Tickets

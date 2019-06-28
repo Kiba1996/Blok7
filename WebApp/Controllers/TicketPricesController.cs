@@ -27,7 +27,8 @@ namespace WebApp.Controllers
         }
         // GET: api/TicketPrices
         [Route("GetAllTicketPrices")]
-        public IEnumerable<TicketPrices> GetTicketPrices()
+        public IEnumerable<TicketPrices> 
+            Prices()
         {
             return unitOfWork.TicketPrices.GetAll().ToList();
         }

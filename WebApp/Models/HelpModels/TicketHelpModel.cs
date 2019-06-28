@@ -12,4 +12,9 @@ namespace WebApp.Models.HelpModels
         public string TicketType { get; set; }
         public double TicketPrice { get; set; }
     }
+    public class ModelHelpTicketValidation
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

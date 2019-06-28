@@ -60,8 +60,8 @@
           <label>{{st.Address}}</label><br/>
           <label>___________________________________________________________________________</label><br/>
         </div>
-        <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
-        </div>
+        <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
+        </div> -->
       </div>
         
       <div *ngIf="isSelected('Change')">
@@ -72,8 +72,8 @@
             <button  class="btn btn-danger" (click)="removeFromLine(st.Id,i)">X</button> <br/>
             <label>___________________________________________________________________________</label><br/>
         </div>
-        <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
-        </div>
+        <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
+        </div> -->
       </div>
         
       <div *ngIf="isSelected('Change')">

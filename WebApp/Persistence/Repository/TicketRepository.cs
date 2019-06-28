@@ -36,7 +36,7 @@ namespace WebApp.Persistence.Repository
                 client.Host = "smtp.gmail.com";
                 client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.Timeout = 10000;
+                client.Timeout = 20000;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(mailFrom, pass);
 

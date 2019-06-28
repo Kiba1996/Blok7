@@ -82,34 +82,14 @@ export class BuyATicketComponent implements OnInit {
        }
        
      });
-    //  let ro = localStorage.getItem('role');
-    // if(ro)
-    // {
-    //   if(ro == "AppUser")
-    //   {
-
-        
-    //     this.prikaziButtonK = true;
-    //     this.neregKupVremKartu = false;
+  
     if(!this.neregKupVremKartu)
     {
         this.CalculateDiscount();
-       
-     // }
     }else{
     //  this.prikaziButtonK = false;
       this.discount = 0;
       this.priceWDiscount = this.price;
-      // if(this.selecetTT == 1)
-      // {
-      //   this.neregKupVremKartu = true;
-      //   this.poruka = "";
-      // }
-      // else{
-      //   this.poruka = "Only signed in users can buy this type of ticket!";
-      //   this.neregKupVremKartu = false;
-      // }
-
     }
     this.initConfig();
     }
@@ -122,16 +102,8 @@ export class BuyATicketComponent implements OnInit {
     this.ticketServ.getTypeUser(uN).subscribe(data =>{
       this.typeM = data;
       this.discount =  this.typeM.Coefficient * 100;
-      this.priceWDiscount = this.price - (this.price * this.typeM.Coefficient) ;
-      // if(this.typeM.Name != "Regular")
-      // {
-      //   if(!this.user.Activated)
-      //   {
-      //     window.alert("You are not authorized for this action!");
-      //     this.prikaziButtonK = false;
-      //   }
-      // }
-      
+      this.priceWDiscount = this.price - (this.price * this.typeM.Coefficient);
+
     });
   }
 
@@ -171,16 +143,6 @@ export class BuyATicketComponent implements OnInit {
     }else{
       if(t.Email != "" && t.Email != undefined && t.Email != null){
 
-        // let b = new Date();
-        // b.setHours(b.getHours()+ 2);
-        // ticketMod.PurchaseTime = new Date(b);
-        // ticketMod.TicketTypeId = this.selecetTT;
-        // this.priceList.TicketPricess.forEach(element => {
-        //   if(element.TicketTypeId == this.selecetTT)
-        //   {
-        //     ticketMod.TicketPricesId = element.Id;
-        //   }
-        // });
         ticketMod.Name= t.Email;
       // ticketMod.ApplicationUserId = null;
         this.ticketServ.addTicket(ticketMod).subscribe( data => {
