@@ -10,14 +10,14 @@ import { AuthenticationService } from 'src/app/services/auth/authentication.serv
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 //import { PayPalConfig } from 'ngx-paypal'
-//import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
+import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
 @Component({
   selector: 'app-buy-a-ticket',
   templateUrl: './buy-a-ticket.component.html',
   styleUrls: ['./buy-a-ticket.component.css']
 })
 export class BuyATicketComponent implements OnInit {
-  //public payPalConfig?: IPayPalConfig;
+  public payPalConfig?: IPayPalConfig;
   allTicketTypes : any = [];
   ticketTypeDetail: string = "";
   selecetTT : number;
@@ -32,8 +32,15 @@ export class BuyATicketComponent implements OnInit {
   prikaziButtonK : boolean = false;
    typeM : any;
    EmailForPay : string = "";
-
-  constructor(private router: Router, private ticketServ: TicketService, private pricelistServ: PricelistServiceService, private usersService: UserProfileService) {
+   
+   ////////////////////////////////////
+   validan : any;
+   korisceniEmail: string = "";
+   boolZaOtvaranjeForme: boolean = false;
+   mailZaSlanje: string = "";
+  
+  
+   constructor(private router: Router, private ticketServ: TicketService, private pricelistServ: PricelistServiceService, private usersService: UserProfileService) {
     ticketServ.getAllTicketTypes().subscribe( data => {
       this.allTicketTypes = data;
     });
@@ -64,8 +71,8 @@ export class BuyATicketComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log("pozvan initConfig()");
-    this.initConfig(); 
+   // console.log("pozvan initConfig()");
+    //this.initConfig(); 
   }
 
   SelectedTicketType(event)
@@ -73,7 +80,7 @@ export class BuyATicketComponent implements OnInit {
     if(event.target.value != "" && event.target.value != "0" && this.selecetTT !=parseInt(event.target.value, 10))
     {
      this.selecetTT = parseInt(event.target.value, 10);
-     this.prikaziButtonK = true;
+    // this.prikaziButtonK = true;
      this.priceList.TicketPricess.forEach(element => {
        if(element.TicketTypeId == this.selecetTT)
        {
@@ -90,8 +97,10 @@ export class BuyATicketComponent implements OnInit {
     //  this.prikaziButtonK = false;
       this.discount = 0;
       this.priceWDiscount = this.price;
+      this.boolZaOtvaranjeForme = true;
+      this.initConfig();
     }
-    this.initConfig();
+   
     }
   
   }
@@ -104,11 +113,13 @@ export class BuyATicketComponent implements OnInit {
       this.discount =  this.typeM.Coefficient * 100;
       this.priceWDiscount = this.price - (this.price * this.typeM.Coefficient);
 
+      //////////
+      this.initConfig();
+
     });
   }
 
-  Button1(t:any,form: NgForm ){
-   
+  AddTicketToDatabase(){
     let ticketMod = new TicketModel("",new Date(),0,"",0,0);
     let b = new Date();
     b.setHours(b.getHours()+ 2);
@@ -121,55 +132,178 @@ export class BuyATicketComponent implements OnInit {
         ticketMod.TicketPricesId = element.Id;
       }
     });
-    let ai : any;
-    let ro = localStorage.getItem('role');
-    if(ro)
-    {
-      if(ro == "AppUser")
-      {
-        this.usersService.getUserData(localStorage.getItem('name')).subscribe(data =>{
-          ai = data;
-          ticketMod.ApplicationUserId = ai.Id;
-          this.ticketServ.addTicket(ticketMod).subscribe(data => {
-            window.alert("Ticket successfully bought!")
-            this.router.navigate(['ticketPurchases']);
-          },
-          err =>{
-            window.alert(err.error)
-            console.log(err);
-          });
-        });
-      }
-    }else{
-      if(t.Email != "" && t.Email != undefined && t.Email != null){
+    ticketMod.ApplicationUserId = this.user.Id;
+    this.ticketServ.addTicket(ticketMod).subscribe(data => {
+      window.alert("Ticket successfully bought!")
+      this.router.navigate(['ticketPurchases']);
+    },
+    err =>{
+      window.alert(err.error)
+      console.log(err);
+    });
+  }
 
-        ticketMod.Name= t.Email;
-      // ticketMod.ApplicationUserId = null;
-        this.ticketServ.addTicket(ticketMod).subscribe( data => {
+
+  
+
+
+  SubmitEmail(t:any,form: NgForm ){
+   
+   
+    // let ai : any;
+    // let ro = localStorage.getItem('role');
+    // if(ro)
+    // {
+    //   if(ro == "AppUser")
+    //   {
+    //     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data =>{
+    //       ai = data;
+         
+    //     });
+    //   }
+    // }else{
+      if(t.Email != "" && t.Email != undefined && t.Email != null){
+        this.mailZaSlanje = t.Email;
+      //   ticketMod.Name= t.Email;
+      // // ticketMod.ApplicationUserId = null;
+      //   this.ticketServ.addTicket(ticketMod).subscribe( data => {
+      //     this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
+      //       if(resp == 'Ok'){
+      //         window.alert("Ticket successfully bought!")
+      //        this.router.navigateByUrl('/ticketPurchases');
+      //       }
+      //       else{
+      //         alert("Something went wrong");
+      //         this.router.navigateByUrl('/home');
+      //       }
+      //     },
+      //     err =>{
+      //       window.alert(err.error)
+      //       console.log(err);
+      //     });
+      //   },
+      //   err =>{
+      //     window.alert(err.error)
+      //     console.log(err);
+      //   });
+      // } 
+      // else{
+      // window.alert("Email is required!");
+      // }
+    }
+    form.reset();
+  }
+
+
+  addTicketToDatabaseNew(){
+    let ticketMod = new TicketModel("",new Date(),0,"",0,0);
+    let b = new Date();
+    b.setHours(b.getHours()+ 2);
+    ticketMod.PurchaseTime = new Date(b);
+    
+    ticketMod.TicketTypeId = this.selecetTT;
+    this.priceList.TicketPricess.forEach(element => {
+      if(element.TicketTypeId == this.selecetTT)
+      {
+        ticketMod.TicketPricesId = element.Id;
+      }
+    });
+    if(this.mailZaSlanje != "" && this.mailZaSlanje != undefined && this.mailZaSlanje != null){
+        
+      ticketMod.Name = this.mailZaSlanje;
+    }else{
+      ticketMod.Name = this.korisceniEmail;
+    }
+      this.ticketServ.addTicket(ticketMod).subscribe(data => {
+
           this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
             if(resp == 'Ok'){
               window.alert("Ticket successfully bought!")
-             this.router.navigateByUrl('/ticketPurchases');
+             window.alert("Ticket successfully bought!")
+              this.router.navigateByUrl('/home');
             }
             else{
               alert("Something went wrong");
               this.router.navigateByUrl('/home');
             }
+          });
+        
+        // window.alert("Ticket successfully bought!")
+        // this.router.navigate(['home']);
+      },
+      err =>{
+        window.alert(err.error)
+        console.log(err);
+      });
+      
+  }
+
+  buyATicketNew(t:any,form: NgForm){
+    let ticketMod = new TicketModel("",new Date(),0,"",0,0);
+    let b = new Date();
+    b.setHours(b.getHours()+ 2);
+    ticketMod.PurchaseTime = new Date(b);
+    
+    ticketMod.TicketTypeId = this.selecetTT;
+    this.priceList.TicketPricess.forEach(element => {
+      if(element.TicketTypeId == this.selecetTT)
+      {
+        ticketMod.TicketPricesId = element.Id;
+      }
+    });
+    let ro = localStorage.getItem('role');
+    let ai: any;
+    if(ro)
+    {
+      if(ro == "AppUser")
+      {
+        this.usersService.getUserData(localStorage.getItem('name')).subscribe(data => {
+        
+          ai = data;    
+          console.log(this.user); 
+          ticketMod.ApplicationUserId = ai.Id;
+          this.ticketServ.addTicket(ticketMod).subscribe(data => {
+           
+            window.alert("Ticket successfully bought!")
+            this.router.navigate(['show_tickets']);
           },
           err =>{
             window.alert(err.error)
             console.log(err);
           });
-        },
-        err =>{
-          window.alert(err.error)
-          console.log(err);
+          
         });
-      } 
-      else{
-      window.alert("Email is required!");
       }
-   }
+    }else{
+      if(t.Email != "" && t.Email != undefined && t.Email != null){
+        
+      
+      ticketMod.Name = t.Email;
+      this.ticketServ.addTicket(ticketMod).subscribe(data => {
+        
+          this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
+            if(resp == 'Ok'){
+              window.alert("Ticket successfully bought!")
+              this.router.navigateByUrl('/show_tickets');
+            }
+            else{
+              alert("Something went wrong");
+              this.router.navigateByUrl('/home');
+            }
+          });
+        
+        // window.alert("Ticket successfully bought!")
+        // this.router.navigate(['home']);
+      },
+      err =>{
+        window.alert(err.error)
+        console.log(err);
+      });
+      }
+      else{
+        window.alert("Email is required!");
+      }
+    }
   }
 
   private initConfig(): void {
@@ -177,33 +311,86 @@ export class BuyATicketComponent implements OnInit {
    
     var diffDays =this.priceWDiscount;
 
+    console.log("cena u dinarima: ", diffDays);
+    diffDays = diffDays/118;
+    var str = diffDays.toFixed(2);
+    console.log("cena u evrima: ", str);
 
+    this.payPalConfig = {
+      currency: 'EUR',
+      clientId: 'sb',
 
+      createOrderOnClient: (data) => <ICreateOrderRequest> {
+          intent: 'CAPTURE',
+          purchase_units: [{
+              amount: {
+                  currency_code: 'EUR',
+                  value: str,
+                  breakdown: {
+                      item_total: {
+                          currency_code: 'EUR',
+                          value: str
+                      }
+                  }
+              },
+              items: [{
+                  name: 'Enterprise Subscription',
+                  quantity: '1',
+                  category: 'DIGITAL_GOODS',
+                  unit_amount: {
+                      currency_code: 'EUR',
+                      value: str,
+                  },
+              }]
+          }]
+      },
+      advanced: {
+          commit: 'true'
+      },
+      style: {
+          label: 'paypal',
+          layout: 'horizontal',
+          size:  'medium',
+    shape: 'pill',
+    color:  'blue' 
 
-    // this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ClientSideREST, PayPalEnvironment.Sandbox, {
-    //   commit: true,
-    //   client: {
-    //    // sandbox: PayPalKey,
-    //   },
-    //   button: {
-    //     label: 'paypal',
-    //   },
-    //   onPaymentComplete: (data, actions) => {
-    //     console.log('OnPaymentComplete');
-    //   },
-    //   onCancel: (data, actions) => {
-    //     console.log('OnCancel');
-    //   },
-    //   onError: (err) => {
-    //     console.log('OnError');
-    //   },
-    //   transactions: [{
-    //     amount: {
-    //       currency: 'USD',
-    //       total: 1 // this.vehicle.pricePerHour * diffDays * 24
-    //     }
-    //   }]
-    // });
+      },
+
+      onApprove: (data, actions) => {
+          console.log('onApprove - transaction was approved, but not authorized', data, actions);
+          //actions.order.get().then(details => {
+            //  console.log('onApprove - you can get full order details inside onApprove: ', details);
+         // });
+
+      },
+      onClientAuthorization: (data) => {
+          console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+         // this.showSuccess = true;
+         if(this.neregKupVremKartu)
+         {
+           this.korisceniEmail  = data.payer.email_address;
+           this.addTicketToDatabaseNew();
+           //this.boolZaOtvaranjeForme = true;
+         }
+         else{
+           this.AddTicketToDatabase();
+         }
+      },
+      onCancel: (data, actions) => {
+          console.log('OnCancel', data, actions);
+         // this.showCancel = true;
+
+      },
+      onError: err => {
+        window.alert("Something went wrong!");
+          console.log('OnError', err);
+          //this.showError = true;
+      },
+      onClick: (data, actions) => {
+          console.log('onClick', data, actions);
+          //this.resetStatus();
+      },
+  };
   }
 
  

@@ -14,22 +14,37 @@
   <label>Cena sa popustom:</label>
   <label>{{priceWDiscount}}</label><br/>
 </div>
-<form  #ticketBuyForm="ngForm" (ngSubmit)="Button1(ticketBuyForm.value, ticketBuyForm)">
+<div *ngIf="boolZaOtvaranjeForme">
+<form  #ticketBuyForm="ngForm" (ngSubmit)="submitEmail(ticketBuyForm.value, ticketBuyForm)">
 
-<div *ngIf="neregKupVremKartu">
-  <!-- <label>Ticket is valid for the next hour from the moment of purchase!</label> -->
+<!-- <div *ngIf="neregKupVremKartu">
+   <label>Ticket is valid for the next hour from the moment of purchase!</label> 
     <label for="email">Email address:</label>
     <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
     
+</div> -->
+<div >
+  <label>Used email address for purchase : {{korisceniEmail}}</label>
+  <label>Fill field if you want your ticket to get on another email???????????</label>
+
+  <label for="email">New email address:</label>
+  <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
 </div>
-<button *ngIf="prikaziButtonK" type="submit" class="button" >Buy a ticket</button>
+<button  type="submit" class="button" >Submit Email</button>
 <!-- <div *ngIf="!neregKupVremKartu && !prikaziButtonK"> 
     <label>{{poruka}}</label>
       
 </div> -->
 <!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
 </form>
-
+</div>
+<div >
+  <br/>
+  <br/>
+  <br/>
+<label *ngIf="prikaziButtonK">Do you want to pay right away?aaa</label>
+<ngx-paypal  [config]="payPalConfig"></ngx-paypal>
+</div>
 <!-- <div *ngIf="prikaziButtonK ">
     <button type="submit" class="button" (click)="BuyTicket()" >Buy a ticket</button>
     <br/>
