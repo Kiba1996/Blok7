@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { RegModel } from 'src/app/models/regModel';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, NgForm } from '@angular/forms';
 
 
 import { FileUploadService } from 'src/app/services/fileUploadService/file-upload.service';
@@ -17,8 +17,9 @@ import { ConfirmPasswordValidator } from 'src/app/models/Validation/password-val
 export class RegisterComponent implements OnInit {
 
     serverErrors: string[];
-  registerForm = this.fb.group({
-   
+    fileDisabled: boolean = true;
+    registerForm = this.fb.group({
+    
     Password: ['',
       [Validators.required,
       Validators.minLength(6),
@@ -62,6 +63,18 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  SelectedType(event: any): void{
+    if(event.target.value == "Regular")
+    {
+    this.fileDisabled = true;
+    }else{
+      this.fileDisabled = false;
+    }
+    console.log("FILEDISABLED: ");
+    console.log(this.fileDisabled);
+  }
+
   Button1() {
     let regModel: RegModel = this.registerForm.value;
     let formData: FormData = new FormData();
@@ -79,9 +92,9 @@ export class RegisterComponent implements OnInit {
       },
       err => {
         console.log(err);
-        window.alert(err.error.ModelState[""]);
-        this.serverErrors = err.error.ModelState[""]
-
+        window.alert(err.error.Message);
+        //this.serverErrors = err.error.ModelState[""]
+       
       }
     );
     }
@@ -106,8 +119,9 @@ export class RegisterComponent implements OnInit {
             },
             err => {
               console.log(err);
-              window.alert(err.error.ModelState[""]);
-              this.serverErrors = err.error.ModelState[""]
+              window.alert(err.error.Message);
+              // window.alert(err.error.ModelState[""]);
+              // this.serverErrors = err.error.ModelState[""]
             }
           );
          },

@@ -1,18 +1,37 @@
-<h4 *ngIf="priceList" >Od: {{priceList.StartOfValidity}}</h4> 
-<h4 *ngIf="priceList">Do: {{priceList.EndOfValidity}}</h4><br/>
-<label>Trenutno aktuelne cene:</label>
-
-    <div *ngIf="validPrices">
-      <label>Hourly ticket:</label>
-      <label>{{validPrices.Hourly}}</label> <br/>
-      <label>Daily ticket:</label>
-      <label>{{validPrices.Daily}}</label> <br/>
-      <label>Monthly ticket:</label>
-      <label>{{validPrices.Monthly}}</label> <br/>
-      <label>Yearly ticket:</label>
-      <label>{{validPrices.Yearly}}</label> <br/>
-      
+<div class="container" style="width: 800px; margin-top: 20px; align-content: center; text-align: center;">
+<h1>- Current pricelist - </h1>
+  <div>
+      <h4 *ngIf="!priceList"> Currently there is no valid pricelist.</h4>
+      <h4 *ngIf="priceList">Prices are valid until:  {{endOfvalidity}}</h4>
+  </div>
+  <div *ngIf="priceList" class="row" style="align-content:center; border:0ch; text-align: center"> 
+    <div class="col"   >
+        <div> 
+          Hourly ticket:
+        </div><br/>
+        <div >
+          Daily ticket:
+        </div><br/>
+        <div >
+          Monthly ticket:
+        </div><br/>
+        <div >
+          Yearly ticket:
+        </div>
     </div>
-  
- 
-
+    <div class="col"  >
+        <div >
+          {{validPrices.Hourly}} RSD
+        </div> <br/>
+        <div >
+          {{validPrices.Daily}} RSD
+        </div> <br/>
+        <div >
+          {{validPrices.Monthly}} RSD
+        </div> <br/>
+        <div>
+          {{validPrices.Yearly}} RSD
+        </div> 
+    </div>
+  </div>
+</div>

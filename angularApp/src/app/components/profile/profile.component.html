@@ -1,14 +1,32 @@
-<div class="container" *ngIf="!otvorenEdit" >
- <h4>Name: {{user?.Name}}</h4> 
- <h4>Surname: {{user?.Surname}}</h4>
-  <h4>Email: {{user?.Email}}</h4>
-  <h4>Birthday: {{user?.Birthday}}</h4> 
-  <h4>Address: {{user?.Address}}</h4>
-  <h4>Activated: {{user?.Activated}}</h4><br/>
-  <div  *ngIf="accBool && nijeUser" >
-    <button type="submit" (click)="Resend()" >Resend request</button>  <br/>
+
+<div class="container" *ngIf="!otvorenEdit" style=" margin-top: 20px; margin-left: 10px;" >
+    <button class="btn1" style="float: right; margin-top: 20px; margin-right: 20px;"  type="submit" (click)="Edit()" >Edit profile</button> <br/>
+    <div  *ngIf="accBool && nijeUser" style="float: right; margin-top: 20px;margin-right: 20px;">
+     <button class="btn1" type="submit" (click)="Resend()" >Resend request</button>  <br/>
+   </div>
+  <div class="row" >
+    <div class="col">
+        <h4>Name: </h4> <br/>
+        <h4>Surname: </h4><br/>
+         <h4>Email: </h4><br/>
+         <h4>Birthday: </h4> <br/>
+         <h4>Address: </h4><br/>
+         <h4>Activated: </h4><br/>
+
+      </div>
+   
+    <div class="col" style="border-right: 1px  #ff6400">
+        <h4>{{user?.Name}}</h4> <br/>
+        <h4>{{user?.Surname}}</h4><br/>
+         <h4>{{user?.Email}}</h4><br/>
+         <h4>{{user?.Birthday}}</h4> <br/>
+         <h4>{{user?.Address}}</h4><br/>
+         <h4>{{user?.Activated}}</h4><br/>
+    </div>
+   
   </div>
-  <button type="submit" (click)="Edit()" >Edit profile</button> <br/>
+ 
+ 
 </div>
 
 <router-outlet></router-outlet>

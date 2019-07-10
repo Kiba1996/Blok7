@@ -255,6 +255,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LinesController.cs" />
     <Compile Include="Controllers\PassengerTypesController.cs" />
+    <Compile Include="Controllers\PayPalsController.cs" />
     <Compile Include="Controllers\PricelistsController.cs" />
     <Compile Include="Controllers\StationsController.cs" />
     <Compile Include="Controllers\TicketPricesController.cs" />
@@ -283,6 +284,10 @@
     <Compile Include="Migrations\201906260925529_activatedString.Designer.cs">
       <DependentUpon>201906260925529_activatedString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907101001070_payPal.cs" />
+    <Compile Include="Migrations\201907101001070_payPal.Designer.cs">
+      <DependentUpon>201907101001070_payPal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -293,6 +298,7 @@
     <Compile Include="Models\HelpModels\TicketPricesHelpModel.cs" />
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\PassengerType.cs" />
+    <Compile Include="Models\PayPal.cs" />
     <Compile Include="Models\Pricelist.cs" />
     <Compile Include="Models\Station.cs" />
     <Compile Include="Models\SerialNumberSL.cs" />
@@ -306,6 +312,7 @@
     <Compile Include="Persistence\Repository\IDayTypeRepository.cs" />
     <Compile Include="Persistence\Repository\ILineRepository.cs" />
     <Compile Include="Persistence\Repository\IPassengerTypeRepository.cs" />
+    <Compile Include="Persistence\Repository\IPayPalRepository.cs" />
     <Compile Include="Persistence\Repository\IPricelistRepository.cs" />
     <Compile Include="Persistence\Repository\IRepository.cs" />
     <Compile Include="Persistence\Repository\ISerialNumberSLRepository.cs" />
@@ -317,6 +324,7 @@
     <Compile Include="Persistence\Repository\IVehicleRepository.cs" />
     <Compile Include="Persistence\Repository\LineRepository.cs" />
     <Compile Include="Persistence\Repository\PassengerTypeRepository.cs" />
+    <Compile Include="Persistence\Repository\PayPalRepository.cs" />
     <Compile Include="Persistence\Repository\PricelistRepository.cs" />
     <Compile Include="Persistence\Repository\Repository.cs" />
     <Compile Include="Persistence\Repository\SerialNumberSLRepository.cs" />
@@ -437,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906260925529_activatedString.resx">
       <DependentUpon>201906260925529_activatedString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907101001070_payPal.resx">
+      <DependentUpon>201907101001070_payPal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

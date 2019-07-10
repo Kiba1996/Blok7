@@ -1,22 +1,17 @@
-<div class="container" style=" width: 500px; text-align: center;">
-  <h1>Sign In</h1>
+<div class="container" style="width: 500px; margin-top: 20px; text-align: center; align-content: center;">
+  <h1>Sign In</h1> <br/>
+
   <form #loginForm="ngForm" (ngSubmit)="onSignIn(loginForm.value, loginForm)">
       <div class="form-group">
         <label for="email">Email address</label>
         <input required type="email" class="form-control" name="Email" placeholder="Email" ngModel>
-        <!-- <div *ngIf="!validations.emailOk" style="color:red">Email can't be empty.</div> -->
-
       </div>
-
-     
       <div class="form-group">
         <label for="password">Password</label>
         <input required type="password" class="form-control" name="Password" placeholder="Password" ngModel>
-        <!-- <div *ngIf="!validations.passwordOk" style="color:red">Password can't be empty.</div> -->
-
       </div>
 
-    
-      <button  type="submit" class="btn btn-success">Sign In</button>
+      <br/><br/>
+      <button  type="submit" class="btn">Sign In</button>
     </form>
 </div>

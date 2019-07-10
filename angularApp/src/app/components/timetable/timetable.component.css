@@ -1,0 +1,19 @@
+.row{
+    color: #ff6400;
+}
+.input-group-prepend .input-group-text{
+    color:  rgb(255, 255, 255);
+    background-color: #ff6400;
+    border:  #ff6400;
+}
+.custom-select{
+    color: #ff6400;
+}
+.label{
+    color: #ff6400;
+}
+/* .input-group-text::after{
+    background-color: #ff6400;
+    color: rgb(255, 255, 255);
+    border:  #ff6400;
+} */

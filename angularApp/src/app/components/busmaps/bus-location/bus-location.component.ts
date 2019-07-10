@@ -58,8 +58,17 @@ export class BusLocationComponent implements OnInit {
     //inicijalizacija polyline
     this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
    
-    this.checkConnection();
+   // this.checkConnection();
     this.subscribeForTime();
+    this.checkConnection();
+    this.stations = [];
+   // this.clickService.click(this.stations).subscribe(data =>
+    //  {
+
+     //   console.log("data bus location ", data);
+
+
+    //  });
   }
 
   getStationsByLineNumber(lineNumber : string){
@@ -71,7 +80,9 @@ export class BusLocationComponent implements OnInit {
           this.polyline.addLocation(new GeoLocation(this.stations[i].Latitude, this.stations[i].Longitude));
         }
         console.log(this.stations);
-        this.clickService.click(this.stations).subscribe();
+        this.clickService.click(this.stations).subscribe(data =>{
+          this.startTimer();
+        });
       }
     });
    
@@ -89,9 +100,10 @@ export class BusLocationComponent implements OnInit {
       this.stopTimer();
     }else
     {
+      this.stopTimer();
       this.getStationsByLineNumber(event.target.value);   
     
-      this.notifForBL.StartTimer(); 
+    //  this.notifForBL.StartTimer(); 
     }
     
   }
@@ -100,8 +112,8 @@ export class BusLocationComponent implements OnInit {
     this.notifForBL.startConnection().subscribe(e => {
       this.isConnected = e; 
         if (e) {
-          this.notifForBL.StartTimer()
-        }
+        //  this.notifForBL.StartTimer()
+      }
     });
   }  
 
@@ -109,8 +121,8 @@ export class BusLocationComponent implements OnInit {
     this.notifForBL.registerForTimerEvents().subscribe(e => this.onTimeEvent(e));
   }
 
-  position1 : number;
-  position2: number;
+ // position1 : number;
+  //position2: number;
 
   public onTimeEvent(pos: number[]){
     this.ngZone.run(() => { 
@@ -118,7 +130,8 @@ export class BusLocationComponent implements OnInit {
        if(this.isChanged){
          this.latitude = pos[0];
           this.longitude = pos[1];
-           
+          console.log("pos: ", this.latitude, this.longitude);
+          //this.isChanged = false;
        }else{
           this.latitude = 0;
           this.longitude = 0;

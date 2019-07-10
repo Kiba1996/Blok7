@@ -1,37 +1,72 @@
 <!-- *ngIf="priceList"
 *ngIf="priceList" -->
-<h4 *ngIf="!priceList">Nema pricelist!!!!</h4>
-<h4 *ngIf="priceList" >Od: {{priceList.StartOfValidity}}</h4> 
-<h4 *ngIf="priceList">Do: {{priceList.EndOfValidity}}</h4><br/>
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <h4 *ngIf="!priceList">Nema pricelist!!!!</h4>
+        <h2>Current pricelist is valid:</h2><br/>
+        <h4 *ngIf="priceList" >From: {{priceList.StartOfValidity}}</h4> 
+        <h4 *ngIf="priceList">Until: {{priceList.EndOfValidity}}</h4><br/>
+        
+        <form #ticketPricesForm="ngForm" (ngSubmit)="onSubmit1(ticketPricesForm.value,ticketPricesForm)">
+            <div *ngIf="validPrices && !datumVazenjaBool" class="row">
 
-<form #ticketPricesForm="ngForm" (ngSubmit)="onSubmit1(ticketPricesForm.value,ticketPricesForm)">
-    <div *ngIf="validPrices && !datumVazenjaBool">
-        <label>Trenutno aktuelne cene:</label><br/>
-      <label>Hourly ticket:</label>
-      <input type="number" name="Hourly"   [(ngModel)] = "validPrices.Hourly"> <br/>
-      <label>Daily ticket:</label>
-      <input type="number" name="Daily"  [(ngModel)] = "validPrices.Daily"><br/>
-      <label>Monthly ticket:</label>
-      <input type="number" name="Monthly"  [(ngModel)] = "validPrices.Monthly"><br/>
-      <label>Yearly ticket:</label>
-      <input type="number" name="Yearly"  [(ngModel)] = "validPrices.Yearly"><br/>
-      <button *ngIf="!datumVazenjaBool" type="submit" class="button">Add new prices</button>
-    </div>
-</form>
-  <div *ngIf="datumVazenjaBool">
-    <label>Prices for new pricelist: </label> <br/>
-      <label>Hourly ticket: </label> <label>{{ticketPricesPom.Hourly}}</label><br/>
-      <label>Daily ticket: </label> <label>{{ticketPricesPom.Daily}}</label><br/>
-      <label>Monthly ticket: </label> <label>{{ticketPricesPom.Monthly}}</label><br/>
-      <label>Yearly ticket: </label><label>{{ticketPricesPom.Yearly}}</label><br/>
-      <form #pricelistForm="ngForm" (ngSubmit)="onSubmit(pricelistForm.value,pricelistForm)">
-          <div>
-            <label>Start of validity:</label>
-            <input type="date" name="StartOfValidity" ngModel><br/>
-            <label>End of validity:</label>
-            <input type="date" name="EndOfValidity" ngModel><br/>
-            <button type="submit" class="button">Add validity of pricelist</button>
-          </div>
+                <label>Current pricess:</label><br/>
+                <div class="col">
+                    <label>Hourly ticket:</label><br/>
+                    <label>Daily ticket:</label><br/>
+                    <label>Monthly ticket:</label><br/>
+                    <label>Yearly ticket:</label><br/>
+
+                </div>
+                <div class="col">
+                    <input type="number" name="Hourly"   [(ngModel)] = "validPrices.Hourly"> <br/>
+             
+                    <input type="number" name="Daily"  [(ngModel)] = "validPrices.Daily"><br/>
+                    
+                    <input type="number" name="Monthly"  [(ngModel)] = "validPrices.Monthly"><br/>
+                   
+                    <input type="number" name="Yearly"  [(ngModel)] = "validPrices.Yearly"><br/>
+                </div>
+               
+             
+            
+               </div>
+               <div class="row">
+                  <button *ngIf="!datumVazenjaBool" type="submit" class="btn">Add new prices</button>
+                </div>
         </form>
+    </div>
+    <div class="col">
+        <div *ngIf="datumVazenjaBool">
+            <label>Prices for new pricelist: </label> <br/>
+              <label>Hourly ticket: {{ticketPricesPom.Hourly}}</label><br/>
+              <label>Daily ticket: {{ticketPricesPom.Daily}}</label><br/>
+              <label>Monthly ticket: {{ticketPricesPom.Monthly}}</label><br/>
+              <label>Yearly ticket: {{ticketPricesPom.Yearly}}</label><br/>
+              <form #pricelistForm="ngForm" (ngSubmit)="onSubmit(pricelistForm.value,pricelistForm)">
+                  <div class="row">
+                    <div class="col">
+                        <label>Start of validity:</label><br/>
+                        <label>End of validity:</label><br/>
+                    </div>
+                    <div class="col">
+                        <input type="date" name="StartOfValidity" ngModel><br/>
+                        <input type="date" name="EndOfValidity" ngModel><br/>
+                    </div>
+                    
+                 
+                   
+                  </div>
+                  <div class="row">
+                      <button type="submit" class="btn">Add validity of pricelist</button>
+                  </div>
+                </form>
+          </div>
+    </div>
   </div>
 
+
+ 
+
+</div>

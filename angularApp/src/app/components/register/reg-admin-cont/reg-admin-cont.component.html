@@ -1,77 +1,76 @@
-<div class="container" style="width: 500px; text-align: center; ">
-  
-  
-
-  <form [formGroup]="registerForm" (ngSubmit)="Button1()">
-    <h2>Register as admin or controller</h2>
-  
-      <h4>Choose role: </h4>
+<div class="container" style="width: 800px; text-align: center; ">
+ <form [formGroup]="registerForm" (ngSubmit)="Button1()">
+    <h1>Register as admin or controller</h1>
+    <div class="row">
+        <div class="col">
+        <div class="form-group">
+            <label>Choose role: </label>
+            <select class="form-control" name="Role" [value]="Admin" formControlName="Role">
+              <option  value="Admin" >Admin</option>
+              <option  value="Controller" >Controller</option>
+            </select>
+        </div> 
+     
       
-      <select class="form-control" name="Role" [value]="Admin" formControlName="Role">
-          <option  value="Admin" >Admin</option>
-          <option  value="Controller" >Controller</option>
-        </select>
-        <!-- <div *ngIf="!validations.RoleOk" style="color:red">Role can't be empty.</div> -->
-        
-    <!-- </div> -->
     <div class="form-group">
         <label for="Email">Email address</label>
         <input required type="email" class="form-control" name="Email" placeholder="Email" id="Email" formControlName="Email">
-        <!-- <div *ngIf="!validations.emailOk" style="color:red">Email can't be empty.</div> -->
+
         <div *ngIf="f.Email.invalid && (f.Email.dirty || f.Email.touched)" class="alert alert-danger">
-          <ng-container *ngIf="f.Email.errors.required">
+          <!-- <ng-container *ngIf="f.Email.errors.required">
             <p>Email is required.</p>
           </ng-container>
           <ng-container *ngIf="f.Email.errors.email">
             <p>Please enter valid email! Example: name@gmail.com</p>
-          </ng-container>
+          </ng-container> -->
         </div>
       
       </div>
       <div class="form-group">
         <label for="Name">Name</label>
         <input required type="text" class="form-control" name="Name" placeholder="Name" id="Name" formControlName="Name">
-        <!-- <div *ngIf="!validations.NameOk" style="color:red">Name can't be empty.</div> -->
-        <div *ngIf="f.Name.invalid && (f.Name.dirty || f.Name.touched)" class="alert alert-danger">
+       
+        <!-- <div *ngIf="f.Name.invalid && (f.Name.dirty || f.Name.touched)" class="alert alert-danger">
           <ng-container *ngIf="f.Name.errors.required">
             <p>Name is required.</p>
           </ng-container>
-        </div>
+        </div> -->
       </div>
       <div class="form-group">
         <label for="surname">Surname</label>
         <input required type="text" class="form-control" name="Surname" placeholder="Surname" id="Surname" formControlName="Surname">
-        <!-- <div *ngIf="!validations.SurnameOk" style="color:red">Surname can't be empty.</div> -->
-        <div *ngIf="f.Surname.invalid && (f.Surname.dirty || f.Surname.touched)" class="alert alert-danger">
+        
+        <!-- <div *ngIf="f.Surname.invalid && (f.Surname.dirty || f.Surname.touched)" class="alert alert-danger">
           <ng-container *ngIf="f.Surname.errors.required">
             <p>Surname is required.</p>
           </ng-container>
-        </div>
+        </div> -->
       </div>
+      </div>
+     
+      <div class="col">
+
+      <div class="form-group">
+          <label for="birthday">Birthday</label>
+          <input required type="date" class="form-control" name="Birthday" placeholder="dd/mm/yyyy" id="Birthday" formControlName="Birthday">
+      </div>
+        
       <div class="form-group">
         <label for="Address">Address</label>
         <input required type="text" class="form-control" name="Address" placeholder="Address" id="Address" formControlName="Address">
-        <!-- <div *ngIf="!validations.AddressOk" style="color:red">Address can't be empty.</div> -->
-      
-        <div *ngIf="f.Address.invalid && (f.Address.dirty || f.Address.touched)" class="alert alert-danger">
+        
+        <!-- <div *ngIf="f.Address.invalid && (f.Address.dirty || f.Address.touched)" class="alert alert-danger">
           <ng-container *ngIf="f.Address.errors.required">
             <p>Address is required.</p>
           </ng-container>
-        </div>
-      </div>
-     
-
-      <div class="form-group">
-        <label for="birthday">Birthday</label>
-        <input required type="date" class="form-control" name="Birthday" placeholder="dd/mm/yyyy" id="Birthday" formControlName="Birthday">
-        <!-- <div *ngIf="!validations.dateOk" style="color:red">Birthday can't be empty.</div> -->
+        </div> -->
       </div>
 
-      <div class="form-group">
+     <div class="form-group">
         <label for="password">Password</label>
         <input required type="password" class="form-control" name="Password"  placeholder="Password"  formControlName="Password">
-        <!-- <div *ngIf="!validations.passwordOk" style="color:red">Fill out password</div> -->
-        <div *ngIf="f.Password.invalid && (f.Password.dirty || f.Password.touched)" class="alert alert-danger">
+
+        <!-- <div *ngIf="f.Password.invalid && (f.Password.dirty || f.Password.touched)" class="alert alert-danger">
           <ng-container *ngIf="f.Password.errors.required">
             Password is required.
           </ng-container>
@@ -81,7 +80,7 @@
           <ng-container *ngIf="f.Password.errors.pattern">
             <p>Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z').</p>
           </ng-container>
-        </div>
+        </div> -->
       </div>
 
      
@@ -89,13 +88,15 @@
       <div class="form-group">
           <label for="confirmPassword">Confirm Password</label>
           <input required type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm password" formControlName="ConfirmPassword">
-           <!-- <div *ngIf="!validations.password2Ok" style="color:red">Fill out password confirmation</div> -->
-           <div *ngIf="registerForm.errors?.doesntMatch && (f.ConfirmPassword.dirty || f.ConfirmPassword.touched)" class="alert alert-danger">
+          
+           <!-- <div *ngIf="registerForm.errors?.doesntMatch && (f.ConfirmPassword.dirty || f.ConfirmPassword.touched)" class="alert alert-danger">
             <p>Doesnt match with password.</p>
-          </div>
+          </div> -->
         </div>
-
-      <button  type="submit" [disabled]="registerForm.invalid" class="btn btn-success" >Register</button>
+</div>
+</div>
+      <button  type="submit"  class="btn btn-success" >Register</button>
+      <!-- [disabled]="registerForm.invalid" -->
     </form>
 </div> 
 

@@ -95,9 +95,10 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState.First().Value.Errors.First().ErrorMessage);
             }
-
+            
+            
             //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             var user = new ApplicationUser();

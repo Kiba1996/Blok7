@@ -1,14 +1,23 @@
-<div *ngIf="!boolic || tickets.length == 0">
-    <h2>No tickets to show!!!</h2>
-  </div>
-  
-  <div *ngIf="boolic && tickets.length>0">
-    <div *ngFor="let t of tickets, let i = index">
-      <label>{{i+1}}.</label> <br/>
-      <label>   Time of purchase: {{t.PurchaseTime}}</label><br/>
-      <label>   Valid to: {{t.ExparationTime}}</label><br/>
-      <label>   Ticket type: {{t.TicketType}}</label><br/>
-      <label>   Ticket price: {{t.TicketPrice}}</label><br/>
-      <label>____________________________________________________</label>
+<div class="container">
+    <div class="row"  *ngIf="!boolic || tickets.length == 0" style="text-align: center;">
+        <h2>No tickets to show!!!</h2>
+      </div>
+  <div class="row">
+    <div class="col">
+        <div *ngIf="boolic && tickets.length>0">
+
+            <div class="container" *ngFor="let t of tickets, let i = index">
+               
+              <label style="padding-left: 10px" >   <b>Time of purchase: </b> {{blaa[i]}}</label><br/>
+              <label style="padding-left: 10px" >  <b> Expires: {{t.ExparationTime}}</b></label><br/>
+              <label style="padding-left: 10px" >  <b> Type: </b> {{t.TicketType}}</label><br/>
+              <label style="padding-left: 10px">   <b>Price: </b> {{t.TicketPrice}} RSD</label><br/>
+              <label>________________________________________________________________________</label><br/>
+          </div>
+        </div> 
     </div>
-  </div> 
+  </div>
+</div>
+
+  
+  

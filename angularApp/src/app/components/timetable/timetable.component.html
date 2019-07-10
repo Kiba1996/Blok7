@@ -1,31 +1,35 @@
-<div style="width: 500px;margin-top: 20px; margin-left: 330px">
-    <div class="input-group mb-3" >
-        <div class="input-group-prepend">
-          <label class="input-group-text"> Selec daytype </label>
-      
+<div class="row" style="margin-top: 20px;">
+  <div class="col">
+      <div class="input-group mb-3" >
+          <div class="input-group-prepend">
+            <label class="input-group-text"> Select daytype </label>
+          </div>
+      <select  class="custom-select" name="lineNumber" (click)='SelectedDaytype($event)' ngModel> 
+          <option value="0">None</option>
+          <option *ngFor="let ln of allDayTypes" value={{ln.Id}} >{{ln.Name}}</option>
+      </select>
+  </div>
+  <div class="input-group mb-3" *ngIf="selectedDay">
+    <div class="input-group-prepend">
+      <label class="input-group-text"> Choose a line  </label>
+  </div>
+     <select class="custom-select" name="lineNumber"  (click)='SelectedLine($event)' ngModel>
+        <option value=0>None</option>    
+        <option *ngFor="let ln of showList" value={{ln.Id}}  >{{ln.LineNumber}}</option>
+      </select>
+       
+  </div>
+  </div>
+  <div class="col">
+      <div *ngIf="boolic">
+          <h5>Departures:</h5>
+          <div *ngFor="let st of stringovi1, let i = index">
+            <label><b>{{i + 1}}. {{st}}</b></label><br/>
+            <label>___________________________________________________________________________</label><br/>
+          </div>
         </div>
-    <select  class="custom-select" name="lineNumber" (click)='SelectedDaytype($event)' ngModel> 
-        <option value="0">None</option>
-        <!-- <option value="ShowAll" >Show all</option> -->
-        <option *ngFor="let ln of allDayTypes" value={{ln.Id}} >{{ln.Name}}</option>
-    </select>
-</div>
-<div class="input-group mb-3" *ngIf="selectedDay">
-  <div class="input-group-prepend">
-    <label class="input-group-text"> Choose line </label>
-
   </div>
-   <select class="custom-select" name="lineNumber"  (click)='SelectedLine($event)' ngModel>
-      <option value=0>None</option>    
-      <option *ngFor="let ln of showList" value={{ln.Id}}  >{{ln.LineNumber}}</option>
-    </select>
-     
-</div>
+   
   
-<div *ngIf="boolic">
-  <h5>Departures:</h5>
-  <div *ngFor="let st of stringovi1, let i = index">
-    <label><b>{{i + 1}}. {{st}}</b></label><br/>
-    <label>___________________________________________________________________________</label><br/>
-  </div>
+
 </div>

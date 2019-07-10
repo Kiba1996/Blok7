@@ -33,7 +33,7 @@ export class AddChangeVehicleComponent implements OnInit {
     {
       console.log(vehicleData)
       this.vehicleServ.addVehicle(vehicleData).subscribe(data=>{
-        window.alert("Station successfully added!");
+        window.alert("Vehicle successfully added!");
         form.reset();
         this.refresh();
       },

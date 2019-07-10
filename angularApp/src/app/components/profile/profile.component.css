@@ -1,0 +1,11 @@
+.container .row .col h4{
+    color: #ff6400 !important;
+    border: 0.5px  #ff6400
+}
+
+.btn1{
+    color: #ff6400 !important;
+    background-color: transparent;
+    border: 0px transparent;
+    font-size: 20px
+}

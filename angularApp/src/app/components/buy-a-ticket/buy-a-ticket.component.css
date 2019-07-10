@@ -1,0 +1,25 @@
+.container{
+    color: #ff6400;
+}
+
+.btn{
+    background-color: #ff6400;
+    color: rgb(255, 255, 255);
+    border:  #ff6400;
+    font-size: 20px;
+    width: 100px;
+}
+.btn:hover, .btn-:focus, .btn:active, .btn.active, .open .dropdown-toggle.btn {
+ 
+    background-color: rgb(228, 169, 129);
+    border-color: #e4a981;
+     
+    }
+    .input-group-prepend .input-group-text{
+        color:  rgb(255, 255, 255);
+        background-color: #ff6400;
+        border:  #ff6400;
+    }
+    .custom-select{
+        color: #ff6400;
+    }

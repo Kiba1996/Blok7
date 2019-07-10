@@ -34,9 +34,10 @@ namespace WebApp.Models
 
     public class RegisterBindingModel
     {
-        
+        private const string V = @"/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W+)/";
 
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
         
@@ -64,6 +65,7 @@ namespace WebApp.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+       // [RegularExpression(V, ErrorMessage = "Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z').")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

@@ -28,33 +28,16 @@ validPrices: TicketPricesPomModel;
   let priceL : any;
   let bol : boolean = false;
   this.ticketPricesPom.PriceList = pm;
-//  let a : Date = new Date(Date.now());
-//   if(pm.StartOfValidity.toString() == ""  || pm.EndOfValidity.toString() == '' || pm.StartOfValidity == undefined || pm.StartOfValidity == null || pm.EndOfValidity == undefined || pm.EndOfValidity == null)
-//   {
-//     window.alert("Start or End of validiti can't be empty!");
-//     form.reset();
-//     //this.refresh();
 
-//   }
-//   else if(pm.StartOfValidity> pm.EndOfValidity)
-//   {
-//     window.alert("Start of validiti id bigger than End of validity!");
-//     form.reset();
-//     //this.refresh();
-//   }
-  
-  // else{
     this.pricelistServ.addPricelist(this.ticketPricesPom).subscribe(data =>
       {
-        window.alert("Timetable successfully added!");
+        window.alert("Pricelist successfully added!");
         this.refresh();
       },
       err => {
         window.alert(err.error);
         this.refresh();
       });
-  // }
-  
 
   }
   onSubmit1(pm: TicketPricesPomModel, form: NgForm){
@@ -81,6 +64,8 @@ validPrices: TicketPricesPomModel;
     this.pricelistServ.getPricelist().subscribe(data => {
       
       this.priceList = data; 
+      this.priceList.StartOfValidity =  this.priceList.StartOfValidity.split('T')[0];
+      this.priceList.EndOfValidity =  this.priceList.EndOfValidity.split('T')[0];
        console.log(data);
       
        this.validPrices = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(null,null,0, []))

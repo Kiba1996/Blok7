@@ -81,10 +81,7 @@ export class TimetableComponent implements OnInit {
       else {
         this.allLines.forEach(element => {
           k = false;
-          // k = ll.find( g =>{
-          //   g.LineId == element.Id;
-          // });
-    
+         
           ll.forEach(d => {
             if(d.LineId == element.Id)
             {
@@ -128,9 +125,6 @@ SplitDepartures(){
     }
     
   });
-
-  
-  
 
 }
 

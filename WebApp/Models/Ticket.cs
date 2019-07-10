@@ -22,6 +22,10 @@ namespace WebApp.Models
         public int TicketPricesId { get; set; }
         public TicketPrices TicketPrices { get; set; }
 
+        [ForeignKey("PayPal")]
+        public int PayPalId { get; set; }
+        public PayPal PayPal { get; set; }
+
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

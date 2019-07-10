@@ -20,6 +20,7 @@ namespace WebApp.Persistence.UnitOfWork
         ITimetableRepository Timetables { get; set; }
         IVehicleRepository Vehicles { get; set; }
         ISerialNumberSLRepository SerialNumberSLs { get; set; }
+        IPayPalRepository PayPals { get; set; }
 
         int Complete();
     }

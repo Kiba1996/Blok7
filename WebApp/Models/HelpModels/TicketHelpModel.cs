@@ -17,4 +17,20 @@ namespace WebApp.Models.HelpModels
         public int Id { get; set; }
         public string Name { get; set; }
     }
+    public class TicketHelpModel1
+    {
+        public Ticket Ticket { get; set; }
+        public string PayementId { get; set; }
+
+        public TicketHelpModel1()
+        {
+
+        }
+
+        public TicketHelpModel1(Ticket t, string s)
+        {
+            Ticket = t;
+            PayementId = s;
+        }
+    }
 }

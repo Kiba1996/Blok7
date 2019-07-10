@@ -54,9 +54,7 @@ export class TicketValidationComponent implements OnInit {
           }
 
       }
-      // else{
-      //   this.ticketExists = "Ticket doesn't exist in database!"
-      // }
+     
     },
     err =>{
       this.myInput1 = "";
@@ -101,92 +99,6 @@ export class TicketValidationComponent implements OnInit {
       this.ticketForV = null;
       this.ticketMessage = err.error;
     })
-  //   let TT : string = "";
-  //   this.allTT.forEach(element => {
-  //     if(this.ticketForV.TicketTypeId == element.Id)
-  //     {
-  //         TT = element.Name;
-  //     }
-      
-  //   });
-  
-  //   let d : Date = new Date(this.ticketForV.PurchaseTime);
-
-  //   if(n == this.ticketForV.ApplicationUserId)
-  //   {
-
-  //     if(TT == "Hourly")
-  //     {
-  //       d.setHours(d.getHours() + 1);
-  //       if(d < new Date())
-  //       {
-  //         this.ticketMessage = "Ticket is not valid. Time is up!"
-  //       }else
-  //       {
-  //         this.ticketMessage = "Ticket is valid."
-  //       }
-  //     }
-
-  //     if(TT == "Daily")
-  //     {
-  //       if(d.getFullYear() < new Date().getFullYear())
-  //       {
-  //         this.ticketMessage = "Ticket is not valid. Time is up!"
-  //       }else if(d.getFullYear() == new Date().getFullYear())
-  //       {
-  //         if(d.getMonth() < new Date().getMonth())
-  //         {
-  //           this.ticketMessage = "Ticket is not valid. Time is up!"
-  //         }else if(d.getMonth() == new Date().getMonth())
-  //         {
-  //           if(d.getDate() == new Date().getDate())
-  //           {
-  //             this.ticketMessage = "Ticket is valid."
-  //           }
-  //           else{
-  //             this.ticketMessage = "Ticket is not valid. Time is up!"
-  //           }
-          
-  //         }
-  //       }
-  //     }
-
-  //     if(TT == "Monthly")
-  //     {
-  //       if(d.getFullYear() < new Date().getFullYear())
-  //       {
-  //         this.ticketMessage = "Ticket is not valid. Time is up!"
-  //       }else if(d.getFullYear() == new Date().getFullYear())
-  //       {
-  //         if(d.getMonth() == new Date().getMonth())
-  //         {
-  //           this.ticketMessage = "Ticket is valid."
-  //         }
-  //         else{
-  //           this.ticketMessage = "Ticket is not valid. Time is up!"
-  //         }
-         
-  //       }
-  //     }
-
-  //     if(TT == "Yearly")
-  //     {
-  //       if(d.getFullYear() == new Date().getFullYear())
-  //       {
-  //         this.ticketMessage = "Ticket is valid."
-  //       }
-  //       else
-  //       {
-  //         this.ticketMessage = "Ticket is not valid. Time is up!"
-  //       }
-  //     }
-
-  //   }else
-  //   {
-  //     this.ticketMessage = "User with email: " + n + " did not buy ticket with Id: " + this.ticketForV.Id;
-  //   }
-  //   // this.MyInput1 = "";
-  //   // n = "";
-  // }
+ 
   }
 }

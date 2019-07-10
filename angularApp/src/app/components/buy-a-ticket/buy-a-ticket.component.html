@@ -1,12 +1,41 @@
+<div class="container" style="width: 800px; ;margin-top: 20px; align-content: center; text-align: center; ">
+    <h1>Buy a ticket</h1>
+    <br/>
+    <br/>
+  <div class="row">
+    <div class="col">
 
-<div>
-  <select  name="ticketType"  (click)='SelectedTicketType($event)' value = "0" ngModel>
-    <option value="0">None</option>
-    <option *ngFor="let ln of allTicketTypes" value={{ln.Id}} >{{ln.Name}}</option>
-  </select>
+    
+  <div class="input-group mb-3" style="width: 350px;">
+    <div class="input-group-prepend" style="width: 350px;">
+      <label class="input-group-text" style="width: 100px;"> Day type </label>
+      <select style="width: 260px;"  name="ticketType"  (click)='SelectedTicketType($event)' value = "0" ngModel>
+        <option value="0">None</option>
+          <option *ngFor="let ln of allTicketTypes" value={{ln.Id}} >{{ln.Name}}</option>
+        </select>
+    </div>
+</div>
+<div *ngIf="!priceList">
+<label>There is no available pricelist at the moment</label>
 </div>
 
-<div>
+<!-- <div *ngIf="boolZaOtvaranjeForme">
+    <form  #ticketBuyForm="ngForm" (ngSubmit)="submitEmail(ticketBuyForm.value, ticketBuyForm)">
+    
+    <div >
+      <label>Used email address for purchase : {{korisceniEmail}}</label><br/>
+      <label>Fill in the field if you want your ticket to be sent on another email</label><br/>
+      
+      <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
+    </div>
+    <button  type="submit" class="btn" style="width: 200px" >Submit Email</button>
+    
+    </form>
+</div> -->
+
+</div>
+<div class="col">
+<div class="container" style="background-color: rgb(255, 255, 255); align-content: left; text-align: left; border: 1px solid rgb(105, 100, 96);">
   <label>Cena bez popusta: </label>
   <label>{{price}}</label><br/>
   <label>Popust: </label>
@@ -14,30 +43,7 @@
   <label>Cena sa popustom:</label>
   <label>{{priceWDiscount}}</label><br/>
 </div>
-<div *ngIf="boolZaOtvaranjeForme">
-<form  #ticketBuyForm="ngForm" (ngSubmit)="submitEmail(ticketBuyForm.value, ticketBuyForm)">
 
-<!-- <div *ngIf="neregKupVremKartu">
-   <label>Ticket is valid for the next hour from the moment of purchase!</label> 
-    <label for="email">Email address:</label>
-    <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
-    
-</div> -->
-<div >
-  <label>Used email address for purchase : {{korisceniEmail}}</label>
-  <label>Fill field if you want your ticket to get on another email???????????</label>
-
-  <label for="email">New email address:</label>
-  <input required type="email" class="form-control" name="Email" placeholder="Email" [(ngModel)]="EmailForPay">
-</div>
-<button  type="submit" class="button" >Submit Email</button>
-<!-- <div *ngIf="!neregKupVremKartu && !prikaziButtonK"> 
-    <label>{{poruka}}</label>
-      
-</div> -->
-<!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
-</form>
-</div>
 <div >
   <br/>
   <br/>
@@ -45,10 +51,6 @@
 <label *ngIf="prikaziButtonK">Do you want to pay right away?aaa</label>
 <ngx-paypal  [config]="payPalConfig"></ngx-paypal>
 </div>
-<!-- <div *ngIf="prikaziButtonK ">
-    <button type="submit" class="button" (click)="BuyTicket()" >Buy a ticket</button>
-    <br/>
-    <br/>
-    <br/>
-    
-  </div> -->
+</div>
+</div>
+</div>

@@ -40,6 +40,8 @@ namespace WebApp.Persistence.UnitOfWork
         public IVehicleRepository Vehicles { get; set; }
         [Dependency]
         public ISerialNumberSLRepository SerialNumberSLs { get; set; }
+        [Dependency]
+        public IPayPalRepository PayPals { get; set; }
 
         public int Complete()
         {

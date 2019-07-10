@@ -1,43 +1,96 @@
-<div>
-  <label for="action">Choose action:</label>
-  <input  required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
-  <input required type="radio" value="Change"  (click)="setradio('Change')" name="Action"  ngModel> Change/Remove
-</div> 
+<div class="container">
+<div class="row">
+  <div class="col">
+      <div>
+          <label for="action">Choose action: </label><br/>
+          <input  required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
+          <input required type="radio" value="Change"  (click)="setradio('Change')" name="Action"  ngModel> Change/Remove
+        </div> 
 
-<div  *ngIf="isSelected('Add') || isSelected('Change')">
-  <h4>Select daytpe:</h4>
-  <select  name="dayTipe" (click)='SelectedDaytype($event)' [(ngModel)] = 'daySelected'> 
-      <option value="0">None</option>
-      <option *ngFor="let ln of allDayTypes" value={{ln.Id}} >{{ln.Name}}</option>
-  </select>
-</div>
-  <div  *ngIf="selectedDay">
-        <select name="lineNumbers"  (click)='SelectedLine($event)' [(ngModel)] = 'lineSelected'>
-            <option value=0>None</option>
-            <option *ngFor="let ln of showList" value={{ln.Id}}  >{{ln.LineNumber}}</option>
-        </select>
-  </div>
 
-  <div  *ngIf="chooseVehicle && isSelected('Add') && boolic">
-      <select name="vehicleChoice"  (click)='SelectedVehicle($event)' ngModel>
-          <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} - {{ln.Type}}</option>
-      </select>
- 
-</div>
+        <div  *ngIf="isSelected('Add') || isSelected('Change')">
+            <div class="input-group mb-3" >
+                <div class="input-group-prepend">
+                  <label class="input-group-text">Select daytype </label>
+                </div>
+                <select  class="custom-select"  name="dayTipe" (click)='SelectedDaytype($event)' [(ngModel)] = 'daySelected'>
+                  <option value="0">None</option>
+                  <option *ngFor="let ln of allDayTypes" value={{ln.Id}} >{{ln.Name}}</option>
+              </select>
+              </div>
+         
+        </div>
 
-  <div *ngIf="boolic">
-    <button name="butoon4" (click)="DeleteTimetable()" *ngIf="isSelected('Change')">Remove timetable</button>
-    <input type="time" name="vreme" [(ngModel)]="myInput">
-    <button name="butoon1" (click)="addTime(myInput)">Add Time</button>
-    <button name="butoon2" (click)="AddTimetable()" *ngIf="isSelected('Add')">Add timetable</button>
-    <button name="butoon3" (click)="ChangeTimetable()" *ngIf="isSelected('Change')">Change timetable</button>
-    
-      <div *ngFor="let st of stringovi1, let i = index">
-          <label><b>{{i + 1}}. {{st}}</b></label><br/>
-          <button (click)="removeFromTimes(st,i)">X</button> <br/>
-          <label>************************************</label><br/>
+
+        <div  *ngIf="selectedDay">
+
+            <div class="input-group mb-3" >
+                <div class="input-group-prepend">
+                  <label class="input-group-text">Select line number </label>
+                </div>
+                <select class="custom-select"  name="lineNumbers"  (click)='SelectedLine($event)' [(ngModel)] = 'lineSelected'>
+                  <option value="0">None</option>
+                  <option *ngFor="let ln of showList" value={{ln.Id}}  >{{ln.LineNumber}}</option>
+              </select>
+              </div>
+      
+              
+        </div>
+
+        <div  *ngIf="chooseVehicle && isSelected('Add') && boolic">
+
+            <div class="input-group mb-3" >
+                <div class="input-group-prepend">
+                  <label class="input-group-text">Select vehicle </label>
+                </div>
+                <select class="custom-select"   name="vehicleChoice"  (click)='SelectedVehicle($event)' ngModel>
+                    <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} - {{ln.Type}}</option>
+              </select>
+              </div>
+      
+            
+       
       </div>
-    
+      <div class="input-group" *ngIf="boolic">
+          <div>
+              <button class="btn" name="butoon4" (click)="DeleteTimetable()" *ngIf="isSelected('Change')">Remove complete timetable</button>
+          
+          </div>  
+          <br/>
+          <br/>
+          <div class="container">
+              <div class="row">
+                  <div class="col">
+                      <input class="form-control" type="time" name="vreme" [(ngModel)]="myInput">
+                  </div>
+                  <div class="col">
+                      <button class="btn" name="butoon1" (click)="addTime(myInput)">Add Time</button>
+                  </div>
+              </div>
+             <br/>
+             <br>
+              <div class="row" style="align-content: center; text-align:center;">
+                  <button class="btn" name="butoon2" (click)="AddTimetable()" *ngIf="isSelected('Add')">Add timetable</button>
+                  <button class="btn" name="butoon3" (click)="ChangeTimetable()" *ngIf="isSelected('Change')">Change timetable</button>
+                  
+               </div>
+          </div>
+        
+</div>
   </div>
-
+  <div class="col" style="margin-top: 20px">
+      
+        
+         
+         
+            <div *ngFor="let st of stringovi1, let i = index">
+                <label><b>{{i + 1}}. {{st}}</b></label><br/>
+                <button (click)="removeFromTimes(st,i)">X</button> <br/>
+                <label>************************************</label><br/>
+            </div>
+           
+        </div>
+      
+  </div>
+</div>
 

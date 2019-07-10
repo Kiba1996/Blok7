@@ -70,7 +70,8 @@ export class ProfileComponent implements OnInit, OnDestroy  {
    // this.usersService.getUserClaims().subscribe(claims => {
       this.usersService.getUserData(localStorage.getItem('name')).subscribe(data => {
         
-          this.user = data;   
+          this.user = data; 
+          this.user.Birthday = this.user.Birthday.split('T')[0];  
           if(localStorage.getItem('role') == 'AppUser')
           {
 

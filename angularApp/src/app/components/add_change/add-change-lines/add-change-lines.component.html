@@ -1,135 +1,135 @@
 <div class="container">
   <div class="row">
-    <div>
-
-      <div class="col-xs-6">
-        <label for="action">Choose action:</label>
-        <input required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
-        <input required type="radio" value="Change"  (click)="setradio('Change')" name="Action"  ngModel> Change
-        <input required type="radio" value="Remove"  (click)="setradio('Remove')" name="Action"  ngModel> Remove
-      </div> 
-      
-      <div *ngIf="isSelected('Change')">
-        <div class="input-group mb-3" >
-          <div class="input-group-prepend">
-            <label class="input-group-text">Select line you want to change: </label>
-          </div>
-          <select  class="custom-select"  name="lineNumber"  (click)='SelectedLine($event)' [(ngModel)] = 'LineSelected'>
-            <option value="none">None</option>
-            <option *ngFor="let ln of allLines" value="{{ln.LineNumber}}"  >{{ln.LineNumber}}</option>
-        </select>
+   <div class="col">
+      <label for="action">Choose action:</label>
+      <input required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
+      <input required type="radio" value="Change"  (click)="setradio('Change')" name="Action"  ngModel> Change
+      <input required type="radio" value="Remove"  (click)="setradio('Remove')" name="Action"  ngModel> Remove
+    
+    
+    <div *ngIf="isSelected('Change')">
+        <label for="Stations">You can add stations by clicking on marker! </label><br/>
+      <div class="input-group mb-3" >
+        <div class="input-group-prepend">
+          <label class="input-group-text">Select line you want to change: </label>
         </div>
-      </div>
-      
-      <div *ngIf="isSelected('Remove')">
-        <div class="input-group mb-3" >
-            <div class="input-group-prepend">
-              <label class="input-group-text"> Select line you want to remove </label>
-            </div>
-        <select  class="custom-select"  name="lineNumber"  (click)='SelectedLine($event)' ngModel>
+        <select  class="custom-select"  name="lineNumber"  (click)='SelectedLine($event)' [(ngModel)] = 'LineSelected'>
           <option value="none">None</option>
           <option *ngFor="let ln of allLines" value="{{ln.LineNumber}}"  >{{ln.LineNumber}}</option>
-        </select>
-        </div>
+      </select>
       </div>
-
-      <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
-        <div *ngIf = "isSelected('Add')" class="form-group">
-          <label for="LineNumber">Line number:</label>
-          <input required type="text" class="form-control" name="LineNumber" placeholder="Line Number" value={{selectedL}} ngModel>
-          <!-- <div *ngIf="!validations.lineNumberOk" style="color:red">Line number can't be empty.</div> -->
-        </div>
-        
-        <div *ngIf = "!isSelected('Add')" class="form-group">
-          <label for="LineNumber">Line number: {{selectedL}} </label>
-        </div >
-                  
-        <div *ngIf = "isSelected('Add')" class="form-group">
-          <input type="color" name="ColorLine" value="#ff0000" ngModel>
-        </div>
-              
-        <button type="submit" class="btn btn-success" *ngIf="isSelected('Add')">Add</button>
-        <button type="submit" class="btn btn-success" *ngIf="isSelected('Change')">Change</button>
-        <button type="submit" class="btn btn-success" *ngIf="isSelected('Remove')">Remove</button> 
-      </form>
-        
-      <div *ngIf="isSelected('Add')">
-        <label for="Stations">Selected stations:</label>
-        <div *ngFor="let st of selectedStations">
-          <label><b>{{st.Name}}</b></label><br/>
-          <label>{{st.Address}}</label><br/>
-          <label>___________________________________________________________________________</label><br/>
-        </div>
-        <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
-        </div> -->
-      </div>
-        
-      <div *ngIf="isSelected('Change')">
-        <label for="Stations">Stations that belong to line {{selektovanaLinijaZaIzmenu.LineNumber}}:</label>
-        <div *ngFor="let st of selektovanaLinijaZaIzmenu.Stations, let i = index">
-            <label><b>{{i + 1}}. {{st.Name}}</b></label><br/>
-            <label>{{st.Address}}</label><br/>
-            <button  class="btn btn-danger" (click)="removeFromLine(st.Id,i)">X</button> <br/>
-            <label>___________________________________________________________________________</label><br/>
-        </div>
-        <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
-        </div> -->
-      </div>
-        
-      <div *ngIf="isSelected('Change')">
-        <label for="Stations">You can add stations by clicking on marker! </label><br/>
-        <label *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Name:  {{markerZaDodavanje.Name}}</label><br/>
-        <label *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Address:  {{markerZaDodavanje.Address}}</label><br/>
-
-        <form  #stationForm1="ngForm" (ngSubmit)="addStationIntoLine(stationForm1.value, stationForm1)">
-          <label for="rBr" *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Unesite redni broj stanice: </label>
-          <input *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje" required type="number" name="rBr" placeholder="" ngModel><br/>
-          <button class="btn btn-success" type="submit" *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje" >Add station into line</button> <br/>
-          
-          <div  style="color:red">{{errorForListStat}}
+    </div>
+    
+    <div *ngIf="isSelected('Remove')">
+      <div class="input-group mb-3" >
+          <div class="input-group-prepend">
+            <label class="input-group-text"> Select line you want to remove </label>
           </div>
-        </form>
+      <select  class="custom-select"  name="lineNumber"  (click)='SelectedLine($event)' ngModel>
+        <option value="none">None</option>
+        <option *ngFor="let ln of allLines" value="{{ln.LineNumber}}"  >{{ln.LineNumber}}</option>
+      </select>
       </div>
     </div>
 
-    <div class="col-xs-6">
-      <div style="width:50%; height: 50%; margin: 1% 25%">
-        <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">  
-          <div *ngIf="!isSelected('Change')">
-            <agm-marker  [markerClickable]="isSelected('Add')" *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
-              (markerClick) = "stationClick(stat.Id)">
-            </agm-marker>
-          </div>
+    <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
+      <div *ngIf = "isSelected('Add')" class="form-group">
+        <label for="LineNumber">Line number:</label>
+        <input required type="text" class="form-control" name="LineNumber" placeholder="Line Number" value={{selectedL}} ngModel>
+        <!-- <div *ngIf="!validations.lineNumberOk" style="color:red">Line number can't be empty.</div> -->
+      </div>
+      
+      <div *ngIf = "!isSelected('Add')" class="form-group">
+        <label for="LineNumber">Line number: {{selectedL}} </label>
+      </div >
+                
+      <div *ngIf = "isSelected('Add')" class="form-group">
+        <input type="color" name="ColorLine" value="#ff0000" ngModel>
+      </div>
+            
+      <button type="submit" class="btn btn-success" *ngIf="isSelected('Add')">Add</button>
+      <button type="submit" class="btn btn-success" *ngIf="isSelected('Change')">Change</button>
+      <button type="submit" class="btn btn-success" *ngIf="isSelected('Remove')">Remove</button> 
+    </form>
+      
+    <div *ngIf="isSelected('Add')">
+      <label for="Stations">Selected stations:</label>
+      <div *ngFor="let st of selectedStations">
+        <label><b>{{st.Name}}</b></label><br/>
+        <label style="max-width: 200px; word-wrap: break-word">{{st.Address}}</label><br/>
+        <label>_____________________________________________________</label><br/>
+      </div>
+      <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
+      </div> -->
+    </div>
+      
+    <div *ngIf="isSelected('Change')">
+      <label for="Stations">Stations that belong to line {{selektovanaLinijaZaIzmenu.LineNumber}}:</label>
+      <div *ngFor="let st of selektovanaLinijaZaIzmenu.Stations, let i = index">
+          <label><b>{{i + 1}}. {{st.Name}}</b></label><br/>
+          <label style="max-width: 200px; word-wrap: break-word">{{st.Address}}</label><br/>
+          <button  class="btn btn-danger" (click)="removeFromLine(st.Id,i)">X</button> <br/>
+          <label>___________________________________________________</label><br/>
+      </div>
+      <!-- <div *ngIf="!validations.stationsOk" style="color:red">Stations can't be empty.
+      </div> -->
+    </div>
+      
+    <div *ngIf="isSelected('Change')">
+      
+      <label *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Name:  {{markerZaDodavanje.Name}}</label><br/>
+      <label style="max-width: 200px; word-wrap: break-word" *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Address:  {{markerZaDodavanje.Address}}</label><br/>
 
-          <div *ngIf="isSelected('Change')">
-            <agm-marker  [markerClickable]="isSelected('Change')" *ngFor="let stat of drugiMarkeriStati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
-              (markerClick) = "stationClick1(stat.Id)">
-            </agm-marker>
-          </div>
+      <form  #stationForm1="ngForm" (ngSubmit)="addStationIntoLine(stationForm1.value, stationForm1)">
+        <label for="rBr" *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje">Unesite redni broj stanice: </label>
+        <input *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje" required type="number" name="rBr" placeholder="" ngModel><br/>
+        <button class="btn btn-success" type="submit" *ngIf="markerZaDodavanje && boolZaMarkerZaDodavanje" >Add station into line</button> <br/>
+        
+        <div  style="color:red">{{errorForListStat}}
+        </div>
+      </form>
+    </div>
+  </div>
 
-          <div *ngIf="isSelected('Add')">
-            <div  *ngFor="let dire of polyline.path, let j = index">
-              <agm-direction 
-              [renderOptions] = "{polylineOptions: {strokeColor: polyline.color}, suppressMarkers: true,  preserveViewport: true}"
-              *ngIf="polyline.path[j+1]"  
-              [origin]="{ lat: polyline.path[j].latitude, lng: polyline.path[j].longitude }" 
-              [destination]="{ lat: polyline.path[j+1].latitude, lng: polyline.path[j+1].longitude }">
-              </agm-direction>
+  
+   <div class="col">
+      <div style="width: auto; height: auto; margin-top: 1%;">
+          <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">  
+            <div *ngIf="!isSelected('Change')">
+              <agm-marker  [markerClickable]="isSelected('Add')" *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
+                (markerClick) = "stationClick(stat.Id)">
+              </agm-marker>
             </div>
-          </div>
-          
-          <div *ngIf="!isSelected('Add')">
-              <div *ngFor="let point of sl.Stations, let j = index">
+  
+            <div *ngIf="isSelected('Change')">
+              <agm-marker  [markerClickable]="isSelected('Change')" *ngFor="let stat of drugiMarkeriStati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
+                (markerClick) = "stationClick1(stat.Id)">
+              </agm-marker>
+            </div>
+  
+            <div *ngIf="isSelected('Add')">
+              <div  *ngFor="let dire of polyline.path, let j = index">
                 <agm-direction 
-                [renderOptions] = "{polylineOptions: {strokeColor: sl.ColorLine}, suppressMarkers: true, preserveViewport: true}"
-                *ngIf="sl.Stations[j+1]"  
-                [origin]="{ lat: sl.Stations[j].Latitude, lng: sl.Stations[j].Longitude }" 
-                [destination]="{ lat: sl.Stations[j+1].Latitude, lng:sl.Stations[j+1].Longitude }">
+                [renderOptions] = "{polylineOptions: {strokeColor: polyline.color}, suppressMarkers: true,  preserveViewport: true}"
+                *ngIf="polyline.path[j+1]"  
+                [origin]="{ lat: polyline.path[j].latitude, lng: polyline.path[j].longitude }" 
+                [destination]="{ lat: polyline.path[j+1].latitude, lng: polyline.path[j+1].longitude }">
                 </agm-direction>
               </div>
             </div>
-          </agm-map>
-          </div>
-      </div>
+            
+            <div *ngIf="!isSelected('Add')">
+                <div *ngFor="let point of sl.Stations, let j = index">
+                  <agm-direction 
+                  [renderOptions] = "{polylineOptions: {strokeColor: sl.ColorLine}, suppressMarkers: true, preserveViewport: true}"
+                  *ngIf="sl.Stations[j+1]"  
+                  [origin]="{ lat: sl.Stations[j].Latitude, lng: sl.Stations[j].Longitude }" 
+                  [destination]="{ lat: sl.Stations[j+1].Latitude, lng:sl.Stations[j+1].Longitude }">
+                  </agm-direction>
+                </div>
+              </div>
+            </agm-map>
+            </div>
+   </div>
   </div>
-</div>
+  </div>

@@ -30,15 +30,6 @@ export class AuthenticationService {
     else{
      // window.location.href = "/home";
     }
-  
-    // let httpOptions = {
-    //   headers: {
-    //     "Content-type":"application/x-www-fore-urlencoded"
-    //   }
-    // }
-    // this.http.post(this.base_url+"/oauth/token",data,httpOptions).subscribe(data => {
-    //   localStorage.jwt = data.access_token;
-    // });
   }
 
   logout(): void {
@@ -48,9 +39,6 @@ export class AuthenticationService {
     localStorage.removeItem('name');
   }
 
-  // getVehicleTypes() : Observable<any> {
-  //   return this.getVehicleTypes1();
-  // }
   getTypes() {
     return this.httpClient.get(this.base_url+"/api/Types/GetTypes");
   }

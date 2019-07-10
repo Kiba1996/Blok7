@@ -1,33 +1,50 @@
-<div>
-    <label for="action">Choose action:</label>
-    <input  required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
-    <input required type="radio" value="Remove"  (click)="setradio('Remove')" name="Action"  ngModel> Remove
-  </div> 
+<div class="container">
+  
+ 
+  <div>
+      <label for="action">Choose action:</label><br/>
+      <input  required type="radio" value="Add"  (click)="setradio('Add')"  name="Action"  ngModel>Add
+      <input required type="radio" value="Remove"  (click)="setradio('Remove')" name="Action"  ngModel> Remove
+    </div> 
   
 
 <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
-
-    <div *ngIf="isSelected('Add')" class="form-group">
-      <label for="Type">Vehicle type:</label>
-      <select class="form-control" name="Type" [value]="Bus" ngModel>
-          <option  value="Bus" >Bus</option>
-          <option value="Trolley car">Trolley car</option>
-          <option value="Train">Train</option>
-          <option value="Subway train">Subway train</option>
-        </select>
-      <!-- <input required type="text" class="form-control" name="Type" placeholder="Vehicle type"  ngModel> -->
-  
-    </div>
-
-    <div *ngIf="isSelected('Remove')" class="form-group">
-        <label for="Type">Available vehicles:</label>
-        <select name="Id" [value] =  0  [(ngModel)] = 'idVozila'>
-          <option value = 0 >None</option>
-            <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} | {{ln.Type}}</option>
-        </select>
-        
-    </div>
+    <div class="row">
+        <div class="col">
+            <div *ngIf="isSelected('Add')" class="form-group">
+                <div class="input-group mb-3" >
+                    <div class="input-group-prepend">
+                      <label class="input-group-text">Select vehicle type: </label>
+                    </div>
+                    <select  class="custom-select"  name="Type" [value]="Bus" ngModel>
+                        <option  value="Bus" >Bus</option>
+                        <option value="Trolley car">Trolley car</option>
+                        <option value="Train">Train</option>
+                        <option value="Subway train">Subway train</option></select>
+                  </div>
+              
+              </div>
+          
+              <div *ngIf="isSelected('Remove')" class="form-group">
+                  <div class="input-group mb-3" >
+                      <div class="input-group-prepend">
+                        <label class="input-group-text">Available vehicles: </label>
+                      </div>
+                      <select  class="custom-select"  name="Id" [value] =  0  [(ngModel)] = 'idVozila'>
+                          <option value = 0 >None</option>
+                      <option *ngFor="let ln of availableVehicles" value={{ln.Id}}  >{{ln.Id}} | {{ln.Type}}</option>
+                      </select>
+                    </div>
+                  
+              </div>
+             
+            <button type="submit" class="btn" *ngIf="isSelected('Add')">Add</button>
+            <button type="submit" class="btn" *ngIf="isSelected('Remove')">Remove</button>
+        </div>
+        <div class="col">
+    
+        </div>
+      </div>
    
-  <button type="submit" class="button" *ngIf="isSelected('Add')">Add</button>
-  <button type="submit" class="button" *ngIf="isSelected('Remove')">Remove</button>
   </form>
+  </div>

@@ -25,7 +25,7 @@ namespace WebApp.Persistence
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<SerialNumberSL> SerialNumberSLs { get; set; }
-       
+        public DbSet<PayPal> PayPals { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

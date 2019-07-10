@@ -1,0 +1,27 @@
+nav {
+    border-bottom-style: solid;
+    border-bottom-color: hsl(24, 100%, 50%);
+    border-bottom-width: 2px;
+}
+
+.navbar-nav li a{
+    color: #ff6400;
+}
+.navbar-toggler{
+    color: #ff6400;
+    background-color: #ff6400;
+}
+
+.nav-item .dropdown{
+    color: #ff6400;
+    background-color: transparent;
+}
+
+.dropdown-menu{
+    background-color: #ff6400;
+    border: #ff6400;
+    color:  #26313f;
+}
+.dropdown-item{
+    color:  #26313f !important;
+}

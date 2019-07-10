@@ -11,6 +11,8 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 //import { PayPalConfig } from 'ngx-paypal'
 import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
+import { PayPalModel } from 'src/app/models/payPalModel';
+import { TicketPomModel } from 'src/app/models/ticketPomModel';
 @Component({
   selector: 'app-buy-a-ticket',
   templateUrl: './buy-a-ticket.component.html',
@@ -32,20 +34,26 @@ export class BuyATicketComponent implements OnInit {
   prikaziButtonK : boolean = false;
    typeM : any;
    EmailForPay : string = "";
-   
+   dobavljanjePayPal: any;
    ////////////////////////////////////
    validan : any;
    korisceniEmail: string = "";
    boolZaOtvaranjeForme: boolean = false;
    mailZaSlanje: string = "";
-  
-  
+   postojiPriceList: boolean;
+   skloniFormu: boolean = false;
+
    constructor(private router: Router, private ticketServ: TicketService, private pricelistServ: PricelistServiceService, private usersService: UserProfileService) {
     ticketServ.getAllTicketTypes().subscribe( data => {
       this.allTicketTypes = data;
     });
     this.pricelistServ.getPricelist().subscribe(data => {
       this.priceList = data; 
+      if(data == null){
+        this.postojiPriceList = false;
+      }else{
+        this.postojiPriceList = true;
+      }
        console.log(data);
     });
 
@@ -81,14 +89,17 @@ export class BuyATicketComponent implements OnInit {
     {
      this.selecetTT = parseInt(event.target.value, 10);
     // this.prikaziButtonK = true;
-     this.priceList.TicketPricess.forEach(element => {
-       if(element.TicketTypeId == this.selecetTT)
-       {
-        this.price = element.Price;
+    if(this.priceList != null){
+      this.priceList.TicketPricess.forEach(element => {
+        if(element.TicketTypeId == this.selecetTT)
+        {
+         this.price = element.Price;
+         
+        }
         
-       }
-       
-     });
+      });
+    
+    
   
     if(!this.neregKupVremKartu)
     {
@@ -102,7 +113,11 @@ export class BuyATicketComponent implements OnInit {
     }
    
     }
-  
+  }
+  else{
+    //window.alert("There is no available pricelist at the moment!")
+    
+  }
   }
 
   CalculateDiscount(){
@@ -120,6 +135,21 @@ export class BuyATicketComponent implements OnInit {
   }
 
   AddTicketToDatabase(){
+
+    let payPalMod = new PayPalModel(0);
+    payPalMod.PayementId = this.dobavljanjePayPal.id;
+    let pom = new Date(this.dobavljanjePayPal.create_time);
+    //pom.setHours(pom.getHours() + 2);
+    payPalMod.CreateTime = pom;
+    payPalMod.PayerEmail = this.dobavljanjePayPal.payer.email_address;
+    payPalMod.PayerName = this.dobavljanjePayPal.payer.name.given_name;
+    payPalMod.PayerSurname = this.dobavljanjePayPal.payer.name.surname;
+    payPalMod.CurrencyCode = this.dobavljanjePayPal.purchase_units[0].amount.currency_code;
+    payPalMod.Value = this.dobavljanjePayPal.purchase_units[0].amount.value;
+
+    console.log("PayPal model: ", payPalMod);
+
+
     let ticketMod = new TicketModel("",new Date(),0,"",0,0);
     let b = new Date();
     b.setHours(b.getHours()+ 2);
@@ -133,9 +163,25 @@ export class BuyATicketComponent implements OnInit {
       }
     });
     ticketMod.ApplicationUserId = this.user.Id;
-    this.ticketServ.addTicket(ticketMod).subscribe(data => {
-      window.alert("Ticket successfully bought!")
-      this.router.navigate(['ticketPurchases']);
+  //  this.ticketServ.addTicket(ticketMod).subscribe(data => {
+
+      let tpom = new TicketPomModel(ticketMod, payPalMod.PayementId);
+      this.ticketServ.addPayPal(payPalMod).subscribe(data => {
+      this.ticketServ.addTicket(tpom).subscribe(data => {
+  
+  
+          window.alert("Ticket successfully bought!")
+          //ShowTicketsComponent.returned.next(false);
+          //this.router.navigateByUrl('/show_tickets');
+          this.router.navigate(['home']);
+        },
+        err => {
+          window.alert(err.error);
+        });
+
+
+      // window.alert("Ticket successfully bought!")
+      // this.router.navigate(['ticketPurchases']);
     },
     err =>{
       window.alert(err.error)
@@ -150,52 +196,30 @@ export class BuyATicketComponent implements OnInit {
   SubmitEmail(t:any,form: NgForm ){
    
    
-    // let ai : any;
-    // let ro = localStorage.getItem('role');
-    // if(ro)
-    // {
-    //   if(ro == "AppUser")
-    //   {
-    //     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data =>{
-    //       ai = data;
-         
-    //     });
-    //   }
-    // }else{
       if(t.Email != "" && t.Email != undefined && t.Email != null){
         this.mailZaSlanje = t.Email;
-      //   ticketMod.Name= t.Email;
-      // // ticketMod.ApplicationUserId = null;
-      //   this.ticketServ.addTicket(ticketMod).subscribe( data => {
-      //     this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
-      //       if(resp == 'Ok'){
-      //         window.alert("Ticket successfully bought!")
-      //        this.router.navigateByUrl('/ticketPurchases');
-      //       }
-      //       else{
-      //         alert("Something went wrong");
-      //         this.router.navigateByUrl('/home');
-      //       }
-      //     },
-      //     err =>{
-      //       window.alert(err.error)
-      //       console.log(err);
-      //     });
-      //   },
-      //   err =>{
-      //     window.alert(err.error)
-      //     console.log(err);
-      //   });
-      // } 
-      // else{
-      // window.alert("Email is required!");
-      // }
+        this.initConfig();
+     
     }
     form.reset();
   }
 
 
   addTicketToDatabaseNew(){
+    let payPalMod = new PayPalModel(0);
+    payPalMod.PayementId = this.dobavljanjePayPal.id;
+    let pom = new Date(this.dobavljanjePayPal.create_time);
+    //pom.setHours(pom.getHours() + 2);
+    payPalMod.CreateTime = pom;
+    payPalMod.PayerEmail = this.dobavljanjePayPal.payer.email_address;
+    payPalMod.PayerName = this.dobavljanjePayPal.payer.name.given_name;
+    payPalMod.PayerSurname = this.dobavljanjePayPal.payer.name.surname;
+    payPalMod.CurrencyCode = this.dobavljanjePayPal.purchase_units[0].amount.currency_code;
+    payPalMod.Value = this.dobavljanjePayPal.purchase_units[0].amount.value;
+
+    console.log("PayPal model: ", payPalMod);
+
+
     let ticketMod = new TicketModel("",new Date(),0,"",0,0);
     let b = new Date();
     b.setHours(b.getHours()+ 2);
@@ -214,7 +238,10 @@ export class BuyATicketComponent implements OnInit {
     }else{
       ticketMod.Name = this.korisceniEmail;
     }
-      this.ticketServ.addTicket(ticketMod).subscribe(data => {
+     // this.ticketServ.addTicket(ticketMod).subscribe(data => {
+      let tpom = new TicketPomModel(ticketMod, payPalMod.PayementId);
+      this.ticketServ.addPayPal(payPalMod).subscribe(data => {
+        this.ticketServ.addTicket(tpom).subscribe(data => {
 
           this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
             if(resp == 'Ok'){
@@ -230,6 +257,11 @@ export class BuyATicketComponent implements OnInit {
         
         // window.alert("Ticket successfully bought!")
         // this.router.navigate(['home']);
+      },
+      err => {
+        window.alert(err.error);
+      });
+
       },
       err =>{
         window.alert(err.error)
@@ -364,8 +396,11 @@ export class BuyATicketComponent implements OnInit {
 
       },
       onClientAuthorization: (data) => {
-          console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+        //  console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
          // this.showSuccess = true;
+         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point');
+          console.log("paypal data: ", data);
+          this.dobavljanjePayPal = data;
          if(this.neregKupVremKartu)
          {
            this.korisceniEmail  = data.payer.email_address;

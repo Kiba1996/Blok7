@@ -80,6 +80,7 @@ namespace WebApp.App_Start
             container.RegisterType<ITimetableRepository, TimetableRepository>();
             container.RegisterType<IVehicleRepository, VehicleRepository>();
             container.RegisterType<ISerialNumberSLRepository, SerialNumberSLRepository>();
+            container.RegisterType<IPayPalRepository, PayPalRepository>();
             //svaki korisnik treba da ima svoj dbkontekst, po requestu
             container.RegisterType<IUnitOfWork, DemoUnitOfWork>();
             container.RegisterType<ApplicationUserManager>();

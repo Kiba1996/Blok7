@@ -1,0 +1,35 @@
+.container{
+    color: #ff6400;
+}
+
+.btn{
+    background-color: #ff6400;
+    color: rgb(255, 255, 255);
+    border:  #ff6400;
+    font-size: 20px;
+    width: auto;
+}
+.custom-file-label{
+    align-content: left;
+    text-align: left;
+}
+.custom-file-label::after{
+    background-color: #ff6400;
+    color: rgb(255, 255, 255);
+    border:  #ff6400;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color:black;
+  -webkit-box-shadow: 0 0 0px 1000px rgb(255, 255, 255) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

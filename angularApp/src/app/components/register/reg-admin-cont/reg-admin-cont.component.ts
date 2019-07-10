@@ -66,9 +66,9 @@ export class RegAdminContComponent implements OnInit {
 
       },
       err => {
-        console.log(err);
-        window.alert(err.error.ModelState[""]);
-        this.serverErrors = err.error.ModelState[""]
+        //console.log(err);
+        window.alert(err.error.Message);
+       // this.serverErrors = err.error.ModelState[""]
 
       }
     );

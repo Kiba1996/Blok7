@@ -1,56 +1,39 @@
 
-<!-- class="form-control" -->
-<!-- <select  name="lineNumber"  (click)='SelectedLine($event)' ngModel>
-  <option value="none">None</option>
-  <option value="showAll">Show all</option>
-   <option value="ShowAll" >Show all</option> 
-  <option *ngFor="let ln of allLines" value="{{ln.LineNumber}}"  >{{ln.LineNumber}}</option>
-</select> -->
+
 <div class="container">
-    <button class="btn btn-success" (click)="getLocation()">See bus location</button> <br/>
   <div class="row">
-   
-  <div class="col-xs-6">
-      <button class="btn btn-success" (click)="showCheckBoxes()">Click to choose lines</button> <br/>
-      <div *ngIf="show">
+    <div class="col">
+        <button class="btn1" (click)="getLocation()">See bus location</button> <br/>
+    </div>
+    <div class="col">
+      <div style="width:50%; height: 50%;  float: left;">
+        <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">  
+          <div>
+            <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"></agm-marker>
+          </div>
+          <div *ngFor="let oneLine of showLines, let i = index">
+            <div  *ngFor="let dire of oneLine.Stations, let j = index">
+                <agm-direction 
+                [renderOptions] = "{polylineOptions: {strokeColor: oneLine.ColorLine}, suppressMarkers: true, preserveViewport: true}"
+                 *ngIf="oneLine.Stations[j+1]"  
+                [origin]="{ lat: oneLine.Stations[j].Latitude, lng: oneLine.Stations[j].Longitude }" 
+                [destination]="{ lat: oneLine.Stations[j+1].Latitude, lng: oneLine.Stations[j+1].Longitude }">
+                </agm-direction>
+            </div>
+          </div>
+        </agm-map>
+      </div>
+    </div>
+    <div class="col" style="float: right;">
+      <button class="btn1" (click)="showCheckBoxes()" style="float: right; align-items: flex-end;">Click to choose lines</button> <br/><br/>
+      <div *ngIf="show" style="float: right; align-items: flex-end;">
           <form [formGroup]="myGroup" >
-               <div formArrayName="allLines" *ngFor="let genre of myGroup.controls.allLines.controls; let i = index">
-                <input  type="checkbox" [formControlName]="i" (change)="FieldsChange($event)" value="{{allLines[i].LineNumber}}">
-                <label>{{allLines[i].LineNumber}}</label><br/>
-               </div>
-              
-            </form>
+              <div formArrayName="allLines" *ngFor="let genre of myGroup.controls.allLines.controls; let i = index">
+                <input class="custom" type="checkbox" [formControlName]="i" (change)="FieldsChange($event)" value="{{allLines[i].LineNumber}}">
+                <label class="custom">{{allLines[i].LineNumber}}</label><br/>
+              </div>
+          </form>
       </div>
-      
-  </div>
-<div class="col-xs-6">
-<div style="width:50%; height: 50%; margin: 1% 25%; float: left;">
-    <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">  
-     <div>
-      <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"></agm-marker>
-        
     </div>
-    
-    
-    <div *ngFor="let oneLine of showLines, let i = index">
-      <div  *ngFor="let dire of oneLine.Stations, let j = index">
-          <agm-direction 
-          [renderOptions] = "{polylineOptions: {strokeColor: oneLine.ColorLine}, suppressMarkers: true, preserveViewport: true}"
-           *ngIf="oneLine.Stations[j+1]"  
-          [origin]="{ lat: oneLine.Stations[j].Latitude, lng: oneLine.Stations[j].Longitude }" 
-          [destination]="{ lat: oneLine.Stations[j+1].Latitude, lng: oneLine.Stations[j+1].Longitude }">
-              <!-- <agm-polyline-point  *ngFor="let point of oneLine.Stations" [latitude]="point.Latitude" [longitude]="point.Longitude">
-              [strokeColor]="oneLine.ColorLine"
-              </agm-polyline-point> -->
-            </agm-direction>
-      </div>
-    
-    </div>
-      <!-- <agm-marker *ngFor="let point of selLine.path" [latitude]="point.latitude" [longitude]="point.longitude" [iconUrl]="selLine.icon">
-       </agm-marker> -->
-  
-    </agm-map>
   </div>
 </div>
-</div>
-  </div>

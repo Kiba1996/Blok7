@@ -1,0 +1,18 @@
+.container{
+    color: #ff6400;
+}
+.btn{
+    background-color: #ff6400;
+    color: #ffffff;
+    border:  #ff6400;
+    font-size: 15px;
+    width: auto;
+}
+.input-group-prepend .input-group-text{
+    color:  rgb(255, 255, 255);
+    background-color: #ff6400;
+    border:  #ff6400;
+}
+.custom-select{
+    color: #ff6400;
+}

@@ -27,17 +27,44 @@ namespace WebApp.Hubs
 
         public void TimeServerUpdates()
         {
-            if (!timer.Enabled)
+            // if (!timer.Enabled)
+            //  {
+            if (timer.Interval != 4000)
             {
-                timer.Interval = 5000;
-                timer.Start();
+                timer.Interval = 4000;
+              // timer.Start();
                 timer.Elapsed += OnTimedEvent;
-            }
+               
+              }
+            timer.Enabled = true;
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            GetTime();
+            #if DEBUG
+                (source as Timer).Enabled = false;
+#endif
+            if (stations != null)
+            {
+                if (cnt >= stations.Count)
+                {
+                    cnt = 0;
+                }
+                double[] niz = { stations[cnt].Latitude, stations[cnt].Longitude };
+                Clients.All.setRealTime(niz);
+                cnt++;
+            }
+            else
+            {
+                double[] nizz = { 0, 0 };
+                //Clients.All.SendAsync("setRealTime", nizz);
+                //Clients.All.setRealTime(nizz);
+            }
+            #if DEBUG
+                (source as Timer).Enabled = true;
+            #endif
+        
+       // GetTime();
         }
 
         public void GetTime()
@@ -49,7 +76,7 @@ namespace WebApp.Hubs
                     cnt = 0;
                 }
                 double[] niz = { stations[cnt].Latitude, stations[cnt].Longitude };
-                Clients.All.setRealTime(niz);
+               // Clients.All.setRealTime(niz);
                 cnt++;
             }
         }
@@ -57,10 +84,12 @@ namespace WebApp.Hubs
         public void StopTimeServerUpdates()
         {
             timer.Stop();
+            stations = null;
         }
 
         public void AddStations(List<Station> stationsBM)
         {
+            stations = new List<Station>();
             stations = stationsBM;
         }
     }

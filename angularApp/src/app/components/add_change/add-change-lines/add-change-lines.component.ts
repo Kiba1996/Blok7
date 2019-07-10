@@ -47,6 +47,10 @@ export class AddChangeLinesComponent implements OnInit {
 
   errorForListStat:string = "";
   
+  directionsService :any ;
+  directionsDisplay : any ;
+  visibleLine: boolean;
+
   constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader , private statServ: StationServiceService, private lineServ: LineServiceService) { 
     this.statServ.getAllStations().subscribe(data => {
       this.stati = data;
@@ -73,6 +77,8 @@ export class AddChangeLinesComponent implements OnInit {
           alert("WTF");
         }
       }));
+      this.directionsService  = new google.maps.DirectionsService();
+      this.directionsDisplay = new google.maps.DirectionsRenderer();
     });
   }
 
@@ -104,16 +110,19 @@ export class AddChangeLinesComponent implements OnInit {
   SelectedLine(event: any): void
   {
     this.selectedL = event.target.value;
-    
+    this.visibleLine = false;
     if(this.selectedL == "none" || this.selectedL == "")
     {
       this.sl = new LineModel(0,"",[],"");
       this.selLine = new Polyline([], 'red', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
       this.selektovanaLinijaZaIzmenu = new LineModel(0,"",[],"");
       this.idForRemove=0;
+      this.directionsDisplay.setMap(null);
     }
     else 
     {
+      this.directionsDisplay.setMap(null);
+      this.visibleLine = false;
       this.selektovanaLinijaZaIzmenu = new LineModel(0,"",[],"");
       this.selLine = new Polyline([], 'red', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
       this.allLines.forEach(x => {
@@ -126,7 +135,9 @@ export class AddChangeLinesComponent implements OnInit {
             this.selLine.addLocation(new GeoLocation(stat.Longitude, stat.Latitude));
           });
           console.log(this.selLine);
+          this.visibleLine= true;
         }
+        
       });
 
     }
@@ -142,6 +153,7 @@ export class AddChangeLinesComponent implements OnInit {
 
   setradio(e: string): void   
   {  
+    this.visibleLine = false;
     this.selektovanaLinijaZaIzmenu = new LineModel(0,"",[],"");
     this.sl = new LineModel(0,"",[],"");
     this.LineSelected = "none";
@@ -170,21 +182,7 @@ export class AddChangeLinesComponent implements OnInit {
         {
           lineData.ColorLine = "#000000";
         }
-        // console.log(lineData)
-        // if(this.validations.validate(lineData)) {
-        //   this.refresh();
-        //   return;
-        // }
-
-        // this.allLines.forEach(element => {
-        //   if(element.LineNumber == lineData.LineNumber)
-        //   {
-        //     window.alert("Line number already exits!");
-        //       form.reset();
-        //       this.refresh();
-        //   }
-          
-        // });
+        
 
         this.lineServ.addLine(lineData).subscribe(data => {
           this.boolic = data;
@@ -209,11 +207,7 @@ export class AddChangeLinesComponent implements OnInit {
         lineData.LineNumber = this.selektovanaLinijaZaIzmenu.LineNumber;
         lineData.Version = this.selektovanaLinijaZaIzmenu.Version;
         console.log(lineData);
-        // if(this.validations.validate(lineData)) {
-        //   this.refresh();
-        //   //form.reset();
-        //   return;
-        // }
+       
         this.lineServ.changeLine(this.selektovanaLinijaZaIzmenu.Id,lineData).subscribe(data =>
           {
             window.alert("Line successfully changed!");
@@ -272,7 +266,7 @@ export class AddChangeLinesComponent implements OnInit {
         window.alert("Can't add a station more than once in one line!");
       }
       else{
-        if(i<=0 || i > this.selektovanaLinijaZaIzmenu.Stations.length)
+        if(i<=0 || i > this.selektovanaLinijaZaIzmenu.Stations.length + 1) 
         {
           this.errorForListStat = "Index out of range!";
           form.reset();

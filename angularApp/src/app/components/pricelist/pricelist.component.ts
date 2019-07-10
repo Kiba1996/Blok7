@@ -10,6 +10,7 @@ import { PriceListModel } from 'src/app/models/pricelistModel';
 })
 export class PricelistComponent implements OnInit {
   priceList: any;
+  endOfvalidity: string = "";
   ticketPricesPom: TicketPricesPomModel = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(new Date(),new Date(),0, []));
   datumVazenjaBool: boolean = false;
   validPrices: TicketPricesPomModel;
@@ -21,6 +22,7 @@ export class PricelistComponent implements OnInit {
         
          this.validPrices = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(new Date(),new Date(),0, []))
          if(this.priceList){
+          this.endOfvalidity = this.priceList.EndOfValidity.split('T')[0];
          this.priceList.TicketPricess.forEach(element => {
           if(element.TicketTypeId == 2)
           {

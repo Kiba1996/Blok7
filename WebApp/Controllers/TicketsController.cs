@@ -254,24 +254,24 @@ namespace WebApp.Controllers
         // POST: api/Tickets
         [Route("Add")]
         [ResponseType(typeof(Ticket))]
-        public IHttpActionResult PostTicket(Ticket ticket)
+        public IHttpActionResult PostTicket(TicketHelpModel1 thm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (ticket.Name != null && ticket.Name != "")
+            if (thm.Ticket.Name != null && thm.Ticket.Name != "")
             {
-                if (ticket.TicketTypeId != 1)
+                if (thm.Ticket.TicketTypeId != 1)
                 {
                     return Content(HttpStatusCode.BadRequest, "Only signedIn users can buy this type of ticket!");
                 }
             }
             else
             {
-                ApplicationUser appu = UserManager.FindById(ticket.ApplicationUserId);
-                if ((appu.Activated == "Deactivated" || appu.Activated == "Pending") && ticket.TicketTypeId != 1)
+                ApplicationUser appu = UserManager.FindById(thm.Ticket.ApplicationUserId);
+                if ((appu.Activated == "Deactivated" || appu.Activated == "Pending") && thm.Ticket.TicketTypeId != 1)
                 {
                     return Content(HttpStatusCode.BadRequest, "Only authorized users can buy this type of ticket!");
                 }
@@ -280,14 +280,15 @@ namespace WebApp.Controllers
             try
             {
                 Ticket t = new Ticket();
-                t.PurchaseTime = ticket.PurchaseTime;
-                t.TicketPricesId = unitOfWork.TicketPrices.Get(ticket.TicketPricesId).Id;
+                t.PurchaseTime = thm.Ticket.PurchaseTime;
+                t.TicketPricesId = unitOfWork.TicketPrices.Get(thm.Ticket.TicketPricesId).Id;
 
-                t.TicketTypeId = unitOfWork.TicketTypes.Get(ticket.TicketTypeId.GetValueOrDefault()).Id;
+                t.TicketTypeId = unitOfWork.TicketTypes.Get(thm.Ticket.TicketTypeId.GetValueOrDefault()).Id;
+                t.PayPalId = unitOfWork.PayPals.GetPayPal(thm.PayementId);
                 t.Name = "Karta";
-                if(ticket.ApplicationUserId  != null && ticket.ApplicationUserId != "")
+                if(thm.Ticket.ApplicationUserId  != null && thm.Ticket.ApplicationUserId != "")
                 {
-                    t.ApplicationUserId = UserManager.FindById(ticket.ApplicationUserId).Id;
+                    t.ApplicationUserId = UserManager.FindById(thm.Ticket.ApplicationUserId).Id;
                 }
                
                 

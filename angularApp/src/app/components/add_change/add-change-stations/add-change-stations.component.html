@@ -9,6 +9,9 @@
           </div> 
         <br/>
           <div *ngIf="!isSelected('Remove')">
+            <label *ngIf="isSelected('Add')"> Add a station by clicking on the map.</label>
+            <label *ngIf="isSelected('Change')"> Change location of a station by draging on the map.</label>
+            
               <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
                 <div class="form-group">
                   <label for="Name"><b>Station name:</b></label>
@@ -37,16 +40,18 @@
                   <!-- <div *ngIf="!validations.latitudeOk" style="color:red">Latitude can't be empty</div> -->
                 </div>
               
-              <button type="submit" class="btn btn-success" *ngIf="isSelected('Add')">Add</button>
-              <button type="submit" class="btn btn-success" *ngIf="isSelected('Change')">Change</button>
+              <button type="submit" class="btn " *ngIf="isSelected('Add')">Add</button>
+              <button type="submit" class="btn" *ngIf="isSelected('Change')">Change</button>
               <!-- <button type="submit" class="button" *ngIf="isSelected('Remove')">Remove</button> -->
             </form>
           </div>
-          <button type="button" class="btn btn-success" *ngIf="isSelected('Remove')" (click)=RemoveStation() >Remove</button>
+          <label *ngIf="isSelected('Remove')"> Click on a station to remove it.</label> <br/>
+          <button type="button" class="btn " *ngIf="isSelected('Remove')" (click)=RemoveStation() >Remove</button>
       </div>
 
       <div class="col-xs-6">
-        <div style="width:50%; height: 50%; margin: 1% 25%">
+       
+        <div style="width:500px; height: 300px; margin: 1% 25%">
           <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18" (mapClick)="placeMarker1($event)">  
             <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
               [markerDraggable]="isSelected('Change')"

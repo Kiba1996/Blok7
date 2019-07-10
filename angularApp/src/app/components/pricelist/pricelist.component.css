@@ -1,0 +1,14 @@
+.container{
+    color: #ff6400;
+}
+
+.h5{
+    font-weight: bold;
+}
+.col{
+    border: 2px solid #ff6400;
+    /*color: #26313f*/
+}
+.row{
+    border: 2px solid #ff6400;
+}

@@ -1,41 +1,44 @@
+<div *ngIf="user" class="container custom">
+  <div class="row">
 
-<div *ngIf="user" class="container">
-  <div *ngIf="user.Activated=='Activated' && user.Role=='Admin'">
-    <div class="col-md-12">
-      <h3>Authorize awaiting controllers </h3>
-      <ul class="list-group" *ngFor="let awaitingController of awaitingControllers; let i = index">
-        <li class="list-group-item">{{awaitingController.Name}} <span class="pull-right" style="float:right">
-          <button class="btn btn-success btn-small" (click)="AuthorizeControllers(awaitingController.Id,i)">Authorize Controller</button>
-          <button class="btn btn-danger btn-small" (click)="DeclineControllers(awaitingController.Id,i)">Decline Controller</button>
-        </span>
-      </li>
+    <div class="col" *ngIf="user.Activated=='Activated' && user.Role=='Controller'">
+      <h3 style="text-align: center;">Authorize awaiting clients</h3> 
+      <ul class="list-group cus" *ngFor="let awaitingClient of awaitingClients; let i = index">
+        <li class="list-group-item cus">Name: {{awaitingClient.Name}}  <br> Surname: {{awaitingClient.Surname}}<br>
+          <img *ngIf="imagesLoaded" src="{{wtfList[i]}}" width="200" height="100" alt="">
+          <span class="pull-right" style="float:right">
+            <button class="btn btn-success btn-small" (click)="AuthorizeUser(awaitingClient.Id,i)">Authorize Client</button>
+            <button class="btn btn-danger btn-small" (click)="DeclineUser(awaitingClient.Id,i)">Decline Client</button>
+          </span>
+        </li>
       </ul>
-
     </div>
-    <div class="col-md-12" *ngIf="user.Activated=='Activated' && user.Role=='Admin'">
-        <h3>Authorize awaiting admins </h3>
-        <ul class="list-group" *ngFor="let awaitingAdmin of awaitingAdmins; let i = index">
-          <li class="list-group-item">{{awaitingAdmin.Name}} <span class="pull-right" style="float:right">
+        
+    <div *ngIf="user.Activated=='Activated' && user.Role=='Admin'" style="align-content: center;" class="col">
+        <div class="col-md-12">
+            <h3 style="text-align: center;">Authorize awaiting controllers </h3>
+            <ul class="list-group cus" *ngFor="let awaitingController of awaitingControllers; let i = index">
+              <li class="list-group-item cus">Name: {{awaitingController.Name}} <br> Surname: {{awaitingController.Surname}}<span class="pull-right" style="float:right">
+                <button class="btn btn-success btn-small" (click)="AuthorizeControllers(awaitingController.Id,i)">Authorize Controller</button>
+                <button class="btn btn-danger btn-small" (click)="DeclineControllers(awaitingController.Id,i)">Decline Controller</button>
+              </span>
+            </li>
+          </ul>
+        </div>
+    </div>
+    <div *ngIf="user.Activated=='Activated' && user.Role=='Admin'" class="col">
+      
+    <div  style="align-content: center; " *ngIf="user.Activated=='Activated' && user.Role=='Admin'">
+        <h3 style="text-align: center;" >Authorize awaiting admins </h3>
+        <ul class="list-group cus" *ngFor="let awaitingAdmin of awaitingAdmins; let i = index">
+          <li class="list-group-item cus">Name: {{awaitingAdmin.Name}} <br> Surname: {{awaitingAdmin.Surname}}<span class="pull-right" style="float:right">
             <button class="btn btn-success btn-small" (click)="AuthorizeAdmins(awaitingAdmin.Id,i)">Authorize Admin</button>
             <button class="btn btn-danger btn-small" (click)="DeclineAdmins(awaitingAdmin.Id,i)">Decline Admin</button>
           </span>
         </li>
-        </ul>
-      </div>
-  
+      </ul>
+    </div>
   </div>
-<div>
-  <div class="col-md-12" *ngIf="user.Activated=='Activated' && user.Role=='Controller'">
-    <h3>Authorize awaiting clients</h3> 
-    <ul class="list-group" *ngFor="let awaitingClient of awaitingClients; let i = index">
-      <li class="list-group-item">{{awaitingClient.Name}}  {{awaitingClient.Surname}}<br>
-        <img *ngIf="imagesLoaded" src="{{wtfList[i]}}" width="200" height="100" alt="">
-        <span class="pull-right" style="float:right">
-          <button class="btn btn-success btn-small" (click)="AuthorizeUser(awaitingClient.Id,i)">Authorize Client</button>
-          <button class="btn btn-danger btn-small" (click)="DeclineUser(awaitingClient.Id,i)">Decline Client</button>
-        </span>
-      </li>
-    </ul>
-  </div>
+
 </div>
 </div>

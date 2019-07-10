@@ -1,0 +1,10 @@
+label{
+    color: #ff6400;
+}
+.btn{
+    background-color: #ff6400;
+    color: rgb(255, 255, 255);
+    border:  #ff6400;
+    font-size: 15px;
+    width: auto;
+}
